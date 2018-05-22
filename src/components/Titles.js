@@ -1,9 +1,9 @@
 import React from "react";
 
-const Titles = () => (
+const Titles = (props) => (
 	<div>
-		<h1 className="title-container__title">MovieApp</h1>
-		<h3 className="title-container__subtitle">Check out new movies based on your friends recommendations</h3>
+		<h1 className="title-container__title">{props.title}</h1>
+		<h3 className="title-container__subtitle">{props.subtitle}</h3>
 	</div>
 );
 

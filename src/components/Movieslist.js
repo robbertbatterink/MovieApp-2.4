@@ -1,8 +1,5 @@
 import React from "react";
 
-const getDetailPage = () => {
-	console.log("Get Detail");
-}
 /*
 const getDetailPage = () =>{
 	const updatePage = React.createClass({
@@ -20,24 +17,24 @@ const getDetailPage = () =>{
 };
 */
 const Movieslist = props => (
-	<div class="movieList_container">
+	<div className="movieList_container">
 
 		<h3>Recently recommended</h3>
-		<ul class="movie_list">
+		<ul className="movie_list">
 
 			<li>
-				<div class="innerMovie">
-					<div class="innerMovie_Image" onClick={getDetailPage}></div>
+				<div className="">
+					<div className="innerMovie_Image" onClick={props.click}></div>
 				</div>
 			</li>
 			<li>
-				<div class="innerMovie im2">
-					<div class="innerMovie_Image2" onClick={getDetailPage}></div>
+				<div className="">
+					<div className="im2" onClick={props.click}></div>
 				</div>
 			</li>
 			<li>
-				<div class="innerMovie im3">
-					<div class="innerMovie_Image3" onClick={getDetailPage}></div>
+				<div className="">
+					<div className="im3" onClick={props.click}></div>
 				</div>
 			</li>
 

@@ -9,7 +9,7 @@ const getRegister = () => {
 };
 
 const Login = () => (
-	<div class="login_container">
+	<div className="login_container">
 	<button onClick={getLogin}>Login</button>
   <button onClick={getRegister}>Register</button>
 	</div>

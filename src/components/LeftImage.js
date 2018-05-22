@@ -1,16 +1,18 @@
 import React from 'react';
 
-const LeftImage = () => {
-	var imgDetailView = 'img/bg3.jpg';
-	const imgWelcome = 'img/bg2.jpg';
-	var divStyle = {
-  backgroundImage: 'url(img/bg2.jpg)'
-};
+const LeftImage = (props) => {
+	const imgUrl = 'http://localhost:3000/static/media/BohemianRapsody_full.f80decef.jpg'
+	const divStyle = {
+		backgroudColor: '#000 !important',
+		backgroundImage: 'url(' + imgUrl + ')',
+
+	};
 	return (
 
-		<div className="col-xs-5 title-container">
+		<div style={props.checkMetaBool ? divStyle : null } className="col-xs-5 title-container">
 			<div id="MovieDetail">
 				<div className="content_placeholder">
+
 
 				</div>
 			</div>
