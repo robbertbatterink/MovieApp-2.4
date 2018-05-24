@@ -204,7 +204,60 @@ max-width: 1500px !important;
     border-radius: 15px;
     background-color: white;
     padding: 5px;
+    cursor:pointer;
+}
 
+.movie-items lu {
+    text-decoration: none;
+    list-style-type: none;
+}
+
+.movie-items li {
+    float: none;
+    cursor:pointer;
+    background-color: white;
+    border-radius: 15px;
+    padding-left: 15px;
+    width: 250px;
+}
+
+.list-badge {
+    cursor:pointer;
+    
+}
+.top-5 {
+    float: left;
+    width: 40%;
+}
+
+.watched {
+    float: left;
+    padding-left: 50px;
+    width: 40%;
+}
+
+.reviews {
+
+    display: inline-block;
+    width: 40%;
+}
+
+.events {
+    position: fixed;
+    display: inline-block;
+    padding-left: 50px;
+    width: 40%;
+}
+
+.movielist-items {
+    float: left;
+    padding-top: 20px;
+    position: relative;
+}
+
+.movie-lists {
+    display: table;
+    margin: 15px;
 }
 
 .feed {
@@ -260,11 +313,21 @@ max-width: 1500px !important;
 .movieList_container {
   margin-top: 80px;
   text-align: left;
+  position: fixed;
+  padding-bottom: 75px;
+  bottom: 0;
 }
 
 .login_container {
   float: right;
   margin-right: 25px;
+}
+
+.myPage_container {
+    float: right;
+    clear: right;
+    padding-top: 15px;
+    margin-right: 25px;
 }
 
 .search_container {
@@ -275,7 +338,7 @@ max-width: 1500px !important;
 }
 
 .badge {
-   color: white;
+    color: white;
     background-color: #2196F3;    
     position: fixed;
 }
@@ -291,6 +354,9 @@ max-width: 1500px !important;
         height: 90%;
 }
 
+.person-text {
+    color: #a5a4a4;
+}
 
 #style-2::-webkit-scrollbar-track
 {

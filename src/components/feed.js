@@ -1,8 +1,15 @@
 import React from "react";
+import { findDOMNode } from "react-dom";
+import $ from 'jquery';
 
 const getDetailPage = () => {
 	console.log("Get Detail");
-}
+};
+
+const getPerson = () => {
+  window.alert("Ga naar dit profiel");
+};
+
 const Feedlist = props => (
 	<div class="feedItems_container">
         
@@ -12,7 +19,7 @@ const Feedlist = props => (
                 <div class="scrollbar feed_comments" id="style-2">
 		<ul class="feed_items">
 
-			<li>
+			<li onClick={getPerson} id="1" >
                             <div class="media">
                                 <div class="media-left">
                                     <div class="media-object person_image"></div>

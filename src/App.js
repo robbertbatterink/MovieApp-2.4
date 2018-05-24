@@ -8,6 +8,9 @@ import Login from "./components/Login";
 import Feedlist from "./components/feed";
 import Logout from "./components/Logout";
 import Personal from "./components/PersonalPage";
+import PersonInfo from "./components/PersonPage";
+import PersonMovie from "./components/PersonMovie";
+import MyPage from "./components/GoToMyPage";
 //import icons from 'glyphicons'
 
 class App extends React.Component {
@@ -25,12 +28,13 @@ class App extends React.Component {
                   <div id="MovieDetail">
                     <p className=""></p>
                   </div>
-                  <Feedlist getDetailPage />
+                  <PersonInfo  />
                 </div>
                 <div className="col-xs-7 form-container">
                   <Logout />
+                  <MyPage />
                   <Form getWeather={this.getWeather} />
-                  <Personal />
+                  <PersonMovie />
                   <Movieslist getDetailPage />
 
                 </div>
