@@ -11,12 +11,15 @@ import Loginhandler from "./components/LoginPage";
 import Registreer from "./components/Registreer";
 import RegistreerPage from "./components/RegistreerPage";
 
+
+
 class App extends React.Component {
   constructor(props){
     super(props)  
     this.state = {
         showlogin: false, 
         showregister: false,  
+        showPersonInfo: false,
         WelcomeTitle: 'MovieAppName',
         SubTitle: 'Check out new movies based on your friends recommendations',
         MovieMetaData: [
@@ -45,6 +48,7 @@ toggleLoginView = () => {
             checkMovieListBool: true,
             WelcomeTitle: 'MovieAppName',
             SubTitle: 'Check out new movies based on your friends recommendations',
+            showPersonInfo: false,
         });            
     }}
 toggleRegisterView = () => {  
@@ -60,6 +64,7 @@ toggleRegisterView = () => {
           checkMovieListBool: true,
           WelcomeTitle: 'MovieAppName',
           SubTitle: 'Check out new movies based on your friends recommendations',
+          showPersonInfo: false,
       })
     }            
   }
@@ -73,7 +78,6 @@ toggleMovieList = () => {
 
 }
 
-
 toggleDetailView = () => {
   this.toggleMovieList()
   this.setState({
@@ -81,6 +85,7 @@ toggleDetailView = () => {
     SubTitle: '2018 (not released)',
     showlogin: false,
     showregister: false,
+    showPersonInfo: false,
     MovieMetaData: [
       {ReleaseDate: '12-12-13'},
       {Duration: 'xx:xx:xx'},
@@ -89,8 +94,8 @@ toggleDetailView = () => {
       {Description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sagittis, massa eget gravida suscipit, diam tortor gravida lacus, non convallis ipsum lacus vitae felis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam in erat iaculis justo sollicitudin mattis'}
   ]
   })
-
 }
+
 // Gets the original Welcome view back
 toggleWelcomeView = () => {
   this.toggleMovieList()
@@ -99,6 +104,7 @@ toggleWelcomeView = () => {
     SubTitle: 'Check out new movies based on your friends recommendations',
     showlogin: false,
     showregister: false,    
+    showPersonInfo: false,
   })
 }
 
@@ -110,9 +116,14 @@ toggleWelcomeView = () => {
             <div className="container">            
               <div className="row">                
                           
-                          <LeftImage checkMetaBool={this.state.checkMetaDataBool}/>         
-                          {this.state.showlogin && (<Loginhandler />)}
-                          {this.state.showregister && (<RegistreerPage />)}
+                          {// LeftImage print wat er op de linker page staat
+                          }
+                          <LeftImage checkMetaBool  ={this.state.checkMetaDataBool} 
+                                     showlogin      ={this.state.showlogin}                                     
+                                     showregister   ={this.state.showregister}
+                                     showPersonInfo ={this.state.showPersonInfo}
+                          />         
+                         
                       
                 <div className="col-xs-7 form-container">
                   <Login action={this.toggleLoginView}/>                  
@@ -122,12 +133,12 @@ toggleWelcomeView = () => {
                     subtitle={this.state.SubTitle}/>
                     {this.state.checkMetaDataBool ?
                     <div>
-                      <MovieMetaData
-                      metaReleaseDate={this.state.MovieMetaData[0].ReleaseDate}
-                      metaDuration={this.state.MovieMetaData[1].Duration}
-                      metaGenre={this.state.MovieMetaData[2].Genre}
-                      metaPC={this.state.MovieMetaData[3].PC}
-                      metaDescription={this.state.MovieMetaData[4].Description}/> 
+                        <MovieMetaData
+                        metaReleaseDate={this.state.MovieMetaData[0].ReleaseDate}
+                        metaDuration={this.state.MovieMetaData[1].Duration}
+                        metaGenre={this.state.MovieMetaData[2].Genre}
+                        metaPC={this.state.MovieMetaData[3].PC}
+                        metaDescription={this.state.MovieMetaData[4].Description}/> 
                     </div> : null }
                     {this.state.checkMovieListBool ? // Ternary operator to check boolean value
                     <div>                   

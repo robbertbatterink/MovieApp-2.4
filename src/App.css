@@ -169,3 +169,39 @@ max-width: 1156px !important;
   float: right;
   margin-right: 25px;
 }
+
+
+
+
+
+
+
+
+
+
+.scrollbar
+{
+	margin-left: 22px;
+        border-radius: 15px;
+	float: left;
+	background: #2c3e50;
+	overflow-y: scroll;
+	margin-bottom: 25px;
+        height: 90%;
+}
+
+.feed_comments {
+    align-content: flex-start;
+    overflow-x:hidden;
+    overflow-y:auto;
+    height: 95%;
+    width: 95%;
+    margin-left: 15px;
+    margin-top: 40px;
+    padding-bottom: 15px;
+    border-radius: 15px;
+}
+
+.person-text {
+    color: #a5a4a4;
+}

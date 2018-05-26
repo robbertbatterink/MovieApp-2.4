@@ -17,8 +17,7 @@ class Loginhandler extends Component {
   handleSubmit = event => {
     //event.preventDefault();
     console.log(this.state.email);
-    console.log(this.state.password);
-    console.log("LOGIN SUCCESVOL");
+    console.log(this.state.password);    
   }
   
   render() {   
