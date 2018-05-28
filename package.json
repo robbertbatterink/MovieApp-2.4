@@ -1,13 +1,11 @@
 {
-  "name": "mvapp",
+  "name": "myapp",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "bootstrap": "^4.1.1",
-    "font-awesome-icons": "^1.4.3",
-    "glyphicons": "^0.2.0",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
     "react-scripts": "1.1.4"
   },
   "scripts": {
