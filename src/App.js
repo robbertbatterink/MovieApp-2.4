@@ -11,6 +11,7 @@ import Personal from "./components/PersonalPage";
 import PersonInfo from "./components/PersonPage";
 import PersonMovie from "./components/PersonMovie";
 import MyPage from "./components/GoToMyPage";
+import EditLists from "./components/EditLists";
 //import icons from 'glyphicons'
 
 class App extends React.Component {
@@ -28,7 +29,7 @@ class App extends React.Component {
                   <div id="MovieDetail">
                     <p className=""></p>
                   </div>
-                  <PersonInfo  />
+                  <EditLists  />
                 </div>
                 <div className="col-xs-7 form-container">
                   <Logout />

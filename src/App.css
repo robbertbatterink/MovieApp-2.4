@@ -310,6 +310,11 @@ max-width: 1500px !important;
 
 }
 
+.edit-list {
+    padding-top: 15px;
+    color: #a5a4a4;
+}
+
 .movieList_container {
   margin-top: 80px;
   text-align: left;
