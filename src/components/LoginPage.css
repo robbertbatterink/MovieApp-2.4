@@ -1,0 +1,24 @@
+.LoginPage {
+
+  width: 100%;
+  height: 100%;
+  background: linear-gradient( #f7830c, #cde651);
+}
+
+
+.inputLoginField{
+  background-color: transparent;
+  border: 0;
+  border-bottom: solid 1px #f16051;
+  width: 30%;
+  padding-bottom: 4px;
+  color: #fff !important;
+  font-weight: lighter;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+  margin-right: 20px;
+  font-size: 20px;
+  outline: none;
+  -webkit-box-shadow: 0 0 0 30px #2c3e50 inset;
+  -webkit-text-fill-color: #fff !important;
+}
