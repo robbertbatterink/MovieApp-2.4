@@ -1,14 +1,12 @@
-import React from "react";
+import React, { Component } from "react";
 
-const getLogout = () => {
-  window.alert("Clicked on Logout button");
-};
-
-const Logout = () => (
+const Logout = (props) => {
+   return (
     <div class="login_container">
-        <button onClick={getLogout}>Logout</button>
+        <button type="button" onClick={props.logout} >Logout</button>
     </div>
-);
+    );
+};
 
 export default Logout;
 

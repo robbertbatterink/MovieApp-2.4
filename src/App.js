@@ -1,7 +1,6 @@
 import React from "react";
 
 import Titles from "./components/Titles";
-import Login from "./components/Login";
 import Feedlist from "./components/feed";
 import Logout from "./components/Logout";
 import Personal from "./components/PersonalPage";
@@ -46,7 +45,10 @@ class App extends React.Component {
           ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
           ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
           ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
-          ShowMovieReccListBool:  true      // Displays the generic movie reccomendations list
+          ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
+          ShowFeed:               false,    // Enables the Feed in the LEFT PART
+          ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
+          LoggedinBool:           true,    // Enables/disables the login and register buttons
     }}
 
   /*
@@ -56,26 +58,30 @@ class App extends React.Component {
   */
   toggleLoginView = () => {
     this.setState({
-      WelcomeImageBool:       false,     // To display the list of recommendations
-      LoginViewBool:          true,    // Enables/disables the login view
+      WelcomeImageBool:       false,    // To display the list of recommendations
+      LoginViewBool:          true,     // Enables/disables the login view
       ShowMetaDataBool:       false,    // Needs to be false initially
       ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
       ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
       ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
-      ShowMovieReccListBool:  true      // Displays the generic movie reccomendations list
+      ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
+      ShowFeed:               false,    // Enables the Feed in the LEFT PART
+      ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
     })
 
   };
 
 toggleRegisterView = () => {
     this.setState({
-      WelcomeImageBool:       false,     // To display the list of recommendations
-      LoginViewBool:          false,    // Enables/disables the login view
+      WelcomeImageBool:       false,    // To display the list of recommendations
+      LoginViewBool:          false,     // Enables/disables the login view
       ShowMetaDataBool:       false,    // Needs to be false initially
       ShowRegisterBool:       true,    // Enables/disables the register view in the LEFT PART
       ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
       ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
-      ShowMovieReccListBool:  true      // Displays the generic movie reccomendations list
+      ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
+      ShowFeed:               false,    // Enables the Feed in the LEFT PART
+      ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
     })
   };
 
@@ -93,13 +99,15 @@ toggleDetailView = () => {
     WelcomeTitle: 'MovieName',
     SubTitle: '2018 (not released)',
     // BOOLEANS
-    WelcomeImageBool:       false,     // To display the list of recommendations
-    LoginViewBool:          false,    // Enables/disables the login view
-    ShowMetaDataBool:       true,    // Needs to be false initially
-    ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
-    ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
-    ShowDetailImageBool:    true,    // Displays the corresponding movie image in the detail view on the LEFT PART
-    ShowMovieReccListBool:  false,      // Displays the generic movie reccomendations list
+      WelcomeImageBool:       false,    // To display the list of recommendations
+      LoginViewBool:          false,     // Enables/disables the login view
+      ShowMetaDataBool:       true,    // Needs to be false initially
+      ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
+      ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
+      ShowDetailImageBool:    true,    // Displays the corresponding movie image in the detail view on the LEFT PART
+      ShowMovieReccListBool:  false,     // Displays the generic movie reccomendations list
+      ShowFeed:               false,    // Enables the Feed in the LEFT PART
+      ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
 
     MovieMetaData: [
       {ReleaseDate: '12-12-13'},
@@ -118,16 +126,35 @@ toggleWelcomeView = () => {
     WelcomeTitle: 'MovieAppName',
     SubTitle: 'Check out new movies based on your friends recommendations',
     // BOOLEANS
-    WelcomeImageBool:       true,     // To display the list of recommendations
-    LoginViewBool:          false,    // Enables/disables the login view
-    ShowMetaDataBool:       false,    // Needs to be false initially
-    ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
-    ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
-    ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
-    ShowMovieReccListBool:  true      // Displays the generic movie reccomendations list
+      WelcomeImageBool:       true,    // To display the list of recommendations
+      LoginViewBool:          false,     // Enables/disables the login view
+      ShowMetaDataBool:       false,    // Needs to be false initially
+      ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
+      ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
+      ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
+      ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
+      ShowFeed:               false,    // Enables the Feed in the LEFT PART
+      ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
+      LoggedinBool:           true,     // Enables/disables the login and register buttons    
   })
 }
 
+//Shows account when login is pressed
+toggleAccount = () => {
+      this.setState({
+      WelcomeImageBool:       false,    // To display the list of recommendations
+      LoginViewBool:          false,     // Enables/disables the login view
+      ShowMetaDataBool:       false,    // Needs to be false initially
+      ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
+      ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
+      ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
+      ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
+      ShowFeed:               true,    // Enables the Feed in the LEFT PART
+      ShowPersonalPage:       true,    // Enables the personal page in the RIGHT PART
+      LoggedinBool:           false,    // Enables/disables the login and register buttons 
+      
+    })      
+};
 
   render() {
     return (
@@ -141,18 +168,24 @@ toggleWelcomeView = () => {
                 <div className="col-xs-5 title-container">
                 {this.state.WelcomeImageBool ? <WelcomeImage/> : null}
                 {this.state.ShowDetailImageBool ? <MovieDetailImage /> : null}
-                {this.state.LoginViewBool ? <LoginPage /> : null }
+                {this.state.LoginViewBool ? <LoginPage toggleAccount={this.toggleAccount}/> : null }
                 {this.state.ShowRegisterBool ? <RegisterView /> : null}
+                {this.state.ShowFeed ? <Feedlist /> : null}
                 </div>
 
 
                 {/**RIGHT PART */}
                 <div className="col-xs-7 form-container">
+                  {this.state.ShowPersonalPage ? <Personal /> : null}
+                  {this.state.ShowPersonalPage ? <Logout logout={this.toggleWelcomeView}/> : null}
+                  {this.state.LoggedinBool ? 
+                  <div>
                   <button onClick={this.toggleLoginView}>Login</button>
                   <button onClick={this.toggleRegisterView}>Register</button>
                   <Titles
                     title={this.state.WelcomeTitle}
-                    subtitle={this.state.SubTitle}/>
+                    subtitle={this.state.SubTitle}/>                  
+                    </div>: null }
                     {this.state.ShowMetaDataBool ?
                     <div>
                         <MovieMetaData
