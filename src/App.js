@@ -1,8 +1,6 @@
 import React from "react";
 
 import Titles from "./components/Titles";
-import Form from "./components/Search";
-import Weather from "./components/Weather";
 import Login from "./components/Login";
 import Feedlist from "./components/feed";
 import Logout from "./components/Logout";
