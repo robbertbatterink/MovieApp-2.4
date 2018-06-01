@@ -237,7 +237,7 @@ max-width: 1500px !important;
   padding: 15px;
   border-radius: 15px;
   text-align: left;
-  background-color: #2c3e50;
+
 }
 
 .feed_comments {
@@ -257,7 +257,7 @@ max-width: 1500px !important;
   padding-top: 25px;
   width: 100%;
   height: 100%;
-  background-color: white;
+  background: linear-gradient( #f7830c, #cde651);;
 }
 
 .movie_list {
@@ -298,6 +298,10 @@ max-width: 1500px !important;
   margin-right: 25px;
 }
 
+.pageBtn_container {
+    float: left;    
+}
+
 .myPage_container {
     float: right;
     clear: right;
@@ -323,14 +327,13 @@ max-width: 1500px !important;
 	margin-left: 22px;
         border-radius: 15px;
 	float: left;
-	background: #2c3e50;
 	overflow-y: scroll;
 	margin-bottom: 25px;
         height: 90%;
 }
 
 .person-text {
-    color: #a5a4a4;
+    color: black;
 }
 
 #style-2::-webkit-scrollbar-track

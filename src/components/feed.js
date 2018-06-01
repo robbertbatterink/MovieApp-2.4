@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component }  from "react";
 import { findDOMNode } from "react-dom";
 import $ from 'jquery';
 
@@ -19,7 +19,7 @@ const Feedlist = props => (
                 <div class="scrollbar feed_comments" id="style-2">
 		<ul class="feed_items">
 
-			<li onClick={getPerson} id="1" >
+			<li onClick={props.getPerson} id="1" >
                             <div class="media">
                                 <div class="media-left">
                                     <div class="media-object person_image"></div>

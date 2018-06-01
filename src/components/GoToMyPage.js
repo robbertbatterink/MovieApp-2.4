@@ -4,9 +4,9 @@ const getMyPage = () => {
   window.alert("Clicked on MyPage button");
 };
 
-const MyPage = () => (
+const MyPage = props => (
     <div class="myPage_container">
-        <button onClick={getMyPage}>My Page</button>
+        <button onClick={props.myPage}>My Page</button>
     </div>
 );
 

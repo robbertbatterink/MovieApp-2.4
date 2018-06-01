@@ -7,7 +7,7 @@ import Personal from "./components/PersonalPage";
 import PersonInfo from "./components/PersonPage";
 import PersonMovie from "./components/PersonMovie";
 import MyPage from "./components/GoToMyPage";
-import EditLists from "./components/EditLists";
+import EditList from "./components/EditList";
 import Movieslist from "./components/Movieslist";
 import WelcomeImage from "./components/WelcomeImage"
 import MovieMetaData from "./components/MovieMetaData"
@@ -16,6 +16,10 @@ import LoginPage from "./components/LoginPage";
 import Loginhandler from "./components/LoginPage";
 import RegisterView from "./components/RegisterView";
 import MovieDetailImage from "./components/MovieDetailImage";
+import Events from "./components/EventBtn";
+import Reviews from "./components/ReviewsBtn";
+import Top5List from "./components/Top5Btn";
+import Watched from "./components/WatchedBtn";
 //import icons from 'glyphicons'
 
 import "./App.css";
@@ -49,6 +53,8 @@ class App extends React.Component {
           ShowFeed:               false,    // Enables the Feed in the LEFT PART
           ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
           LoggedinBool:           true,    // Enables/disables the login and register buttons
+          ShowPerson:             false,    // Displays the profile of another user
+          EditListBool:           false,    //enables/disables the view for editing movielists
     }}
 
   /*
@@ -67,6 +73,8 @@ class App extends React.Component {
       ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
       ShowFeed:               false,    // Enables the Feed in the LEFT PART
       ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
+      ShowPerson:             false,    // Displays the profile of another user
+      EditListBool:           false,    // Enables/disables the view for editing movielists
     })
 
   };
@@ -82,6 +90,8 @@ toggleRegisterView = () => {
       ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
       ShowFeed:               false,    // Enables the Feed in the LEFT PART
       ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
+      ShowPerson:             false,    // Displays the profile of another user
+      EditListBool:           false,    // Enables/disables the view for editing movielists
     })
   };
 
@@ -108,6 +118,8 @@ toggleDetailView = () => {
       ShowMovieReccListBool:  false,     // Displays the generic movie reccomendations list
       ShowFeed:               false,    // Enables the Feed in the LEFT PART
       ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
+      ShowPerson:             false,    // Displays the profile of another user
+      EditListBool:           false,    // Enables/disables the view for editing movielists
 
     MovieMetaData: [
       {ReleaseDate: '12-12-13'},
@@ -135,7 +147,9 @@ toggleWelcomeView = () => {
       ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
       ShowFeed:               false,    // Enables the Feed in the LEFT PART
       ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
-      LoggedinBool:           true,     // Enables/disables the login and register buttons    
+      LoggedinBool:           true,     // Enables/disables the login and register buttons
+      ShowPerson:             false,    // Displays the profile of another user
+      EditListBool:           false,    // Enables/disables the view for editing movielists
   })
 }
 
@@ -151,10 +165,34 @@ toggleAccount = () => {
       ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
       ShowFeed:               true,    // Enables the Feed in the LEFT PART
       ShowPersonalPage:       true,    // Enables the personal page in the RIGHT PART
-      LoggedinBool:           false,    // Enables/disables the login and register buttons 
+      LoggedinBool:           false,    // Enables/disables the login and register buttons
+      ShowPerson:             false,    // Displays the profile of another user
+      EditListBool:           false,    // Enables/disables the view for editing movielists
       
     })      
 };
+togglePerson = () => {
+    this.setState({
+      WelcomeImageBool:       false,    // To display the list of recommendations
+      LoginViewBool:          false,     // Enables/disables the login view
+      ShowMetaDataBool:       false,    // Needs to be false initially
+      ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
+      ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
+      ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
+      ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
+      ShowFeed:               false,    // Enables the Feed in the LEFT PART
+      ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
+      LoggedinBool:           false,    // Enables/disables the login and register buttons 
+      ShowPerson:             true,    // Displays the profile of another user
+      EditListBool:           false,    // Enables/disables the view for editing movielists
+    })
+}
+toggleEditList =() => {
+    this.setState({
+        ShowFeed:            false,    // Enables the Feed in the LEFT PART
+        EditListBool:        true,      // Enables/disables the view for editing movielists
+    })
+}
 
   render() {
     return (
@@ -170,14 +208,18 @@ toggleAccount = () => {
                 {this.state.ShowDetailImageBool ? <MovieDetailImage /> : null}
                 {this.state.LoginViewBool ? <LoginPage toggleAccount={this.toggleAccount}/> : null }
                 {this.state.ShowRegisterBool ? <RegisterView /> : null}
-                {this.state.ShowFeed ? <Feedlist /> : null}
+                {this.state.ShowFeed ? <Feedlist getPerson={this.togglePerson}/> : null}
+                {this.state.EditListBool ? <EditList back={this.toggleAccount}/> : null}
+                {this.state.ShowPerson ? <PersonInfo /> : null}
                 </div>
 
 
                 {/**RIGHT PART */}
                 <div className="col-xs-7 form-container">
                   {this.state.ShowPersonalPage ? <Personal /> : null}
-                  {this.state.ShowPersonalPage ? <Logout logout={this.toggleWelcomeView}/> : null}
+                  {this.state.ShowPersonalPage ? <div> <Logout logout={this.toggleWelcomeView}/> <Top5List /> <Watched back={this.toggleAccount} watchedList={this.toggleEditList}/> <Reviews /> <Events /></div>: null}
+                  {this.state.ShowPerson ? <PersonMovie /> : null}
+                  {this.state.ShowPerson ? <MyPage myPage={this.toggleAccount}/> : null}
                   {this.state.LoggedinBool ? 
                   <div>
                   <button onClick={this.toggleLoginView}>Login</button>
