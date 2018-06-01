@@ -1,8 +1,8 @@
 import React from "react";
 
-const getDetailPage = () => {
-	console.log("Get Detail");
-};
+//  const getDetailPage = () => {
+//  	console.log("Get Detail");
+//  };
 
 const PersonInfo = props => (        
         <div class="feedItems_container">

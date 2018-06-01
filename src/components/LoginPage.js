@@ -1,48 +1,37 @@
-import React, { Component } from "react";
+import React from "react";
+import "./LoginPage.css";
 
-class Loginhandler extends Component {
-  constructor(props) {
-    super(props);
+const LoginPage = (props) => {
+  //const checkBool = props.checkBoolean
+  const email = undefined
+  const password = undefined
 
-    this.state = {
-      email: "",
-      password: ""
-    };
-  }
-
-  handleChange = event => {
-    this.setState({[event.target.id]: event.target.value});
-  }
-
-  handleSubmit = event => {
-    //event.preventDefault();
-    console.log(this.state.email);
-    console.log(this.state.password);    
-  }
-  
-  render() {   
-      return (
-      <div class = "feedItems_container" >
-      <div className="Login">
-		<form>
-		 <input id="email"
-		      	placeholder="E-mail"
-            type="email"
-            value={this.state.email}
-            onChange={this.handleChange} />
-        </form>
-       <form>
-         <input id="password"
-                type="password"
-                placeholder="password"
-                value={this.state.password}
-                onChange={this.handleChange} />
-        </form>
-        <button type="button" onClick={this.handleSubmit} >Login!</button>  
+  //  let handleChange = event => {
+  //    this.setState({[event.target.id]: event.target.value});
+  //  }
+    return (
+      <div className = "LoginPage" >
+        <div>
+          <div className="Login">
+            <br></br>
+          <form>
+            <input className="inputLoginField" id="email"
+                 placeholder="E-mail"
+                 type="email"
+                 value={email}
+                 onChange={this.handleChange} />
+          </form>
+          <form>
+              <input className="inputLoginField" id="password"
+                    type="password"
+                    placeholder="password"
+                    value={password}
+                    onChange={this.handleChange} />
+          </form>
+          <button type="button" onClick={props.toggleAccount} >Login!</button>
+        </div>
       </div>
-      </div>	
-    );
-  }
-}
-export default Loginhandler;
-  
+    </div>
+      );
+    }
+export default LoginPage;

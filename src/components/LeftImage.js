@@ -1,7 +1,4 @@
 import React from 'react';
-import Loginhandler from "./LoginPage";
-import RegistreerPage from "./RegistreerPage";
-import PersonInfo from "./PersonPage";
 
 const LeftImage = (props) => {
 	const imgUrl = 'http://localhost:3000/static/media/BohemianRapsody_full.f80decef.jpg'
@@ -11,12 +8,12 @@ const LeftImage = (props) => {
 
 	};
 	return (
-		<div style={props.checkMetaBool ? divStyle : null } className="col-xs-5 title-container">
-			{props.showlogin && (<Loginhandler />)}
-			{props.showregister && (<RegistreerPage />)}
-			{props.showPersonInfo && (<PersonInfo />)}
-			<div id="MovieDetail">			
-				<div className="content_placeholder">								
+
+		<div style="{props.checkMetaBool ? divStyle : null }" className="col-xs-5 title-container">
+			<div id="MovieDetail">
+				<div className="content_placeholder">
+
+
 				</div>
 			</div>
 		</div>
