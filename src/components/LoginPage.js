@@ -33,7 +33,7 @@ const LoginPage = (props) => {
                     value={password}
                     onChange={handleChange} />
             </form>
-          <button type="button" onClick={this.handleSubmit} >Login!</button>
+          <button type="button" onClick={props.toggleAccount} >Login!</button>
         </div>
       </div>
     </div>
