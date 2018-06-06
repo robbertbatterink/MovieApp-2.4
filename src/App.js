@@ -216,7 +216,7 @@ toggleEditList =() => {
 
                 {/**RIGHT PART */}
                 <div className="col-xs-7 form-container">
-                  {this.state.ShowPersonalPage ? <Personal /> : null}
+                 {this.state.ShowPersonalPage ? <Personal /> : null}
                   {this.state.ShowPersonalPage ? <div> <Logout logout={this.toggleWelcomeView}/> <Top5List /> <Watched back={this.toggleAccount} watchedList={this.toggleEditList}/> <Reviews /> <Events /></div>: null}
                   {this.state.ShowPerson ? <PersonMovie /> : null}
                   {this.state.ShowPerson ? <MyPage myPage={this.toggleAccount}/> : null}

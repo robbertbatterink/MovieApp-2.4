@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 
-const ListItem = ({ value, onClick }) => (
-  <li onClick={onClick}>{value}</li>
+const ListItem = ({ value, onClick, onItemClick }) => (
+  <li onClick={onClick}>{value} <button type="button" value={value} className="close" aria-hidden="false" onClick={onItemClick}>&times;</button> </li>
 );
 
 const List = ({ items, onItemClick }) => (
@@ -10,7 +10,7 @@ const List = ({ items, onItemClick }) => (
     <div className="movielist-items">
         <ul className="movie-items">
           {
-            items.map((item, i) => <ListItem key={i} value={item} onClick={onItemClick} />)
+          items.map((item, i) => <ListItem key={i} value={item} onItemClick={onItemClick}/>)
           }
         </ul>
     </div>
@@ -33,7 +33,14 @@ class ListItems extends React.Component {
       this.setState({ movies: nextState, inputValue: '' });
     }
   }
-
+  
+  onDelete = (e) => {
+      var array = [...this.state.movies];
+      var index = array.indexOf(e.target.value);
+      array.splice(index, 1);
+      this.setState({movies: array});
+  }
+  
   onChange = (e) => this.setState({ inputValue: e.target.value });
 
   handleItemClick = (e) => {console.log(e.target.innerHTML)}
@@ -42,7 +49,7 @@ class ListItems extends React.Component {
     const { movies, inputValue } = this.state;
     return (
       <div>
-        <List items={movies} onItemClick={this.handleItemClick} />
+        <List items={movies} onItemClick={this.onDelete} />
         <input class="inputField" type="text" value={inputValue} onChange={this.onChange} />
         <button onClick={this.onClick}>Add</button>
       </div>
