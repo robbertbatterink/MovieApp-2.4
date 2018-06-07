@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 const ListItem = ({ value, onClick, onItemClick }) => (
   <li onClick={onClick}>{value} <button type="button" value={value} className="close" aria-hidden="false" onClick={onItemClick}>&times;</button> </li>
@@ -66,7 +67,7 @@ const EditList = (props) => {
                     <div className="media">
                         <h3><span className="badge list-badge">Edit List:</span></h3>
                         <ListItems />
-                        <button type="button" onClick={props.back} >Back</button>
+                        <Link to="/Users/Gerard"><button type="button" onClick={props.back} >Back</button></Link>
                             </div>
                         </div>
                     </div>

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import "./LoginPage.css";
 
 const LoginPage = (props) => {
@@ -33,7 +34,7 @@ const LoginPage = (props) => {
                     value={password}
                     onChange={handleChange} />
             </form>
-          <button type="button" onClick={props.toggleAccount} >Login!</button>
+          <Link to="/Users/Gerard"><button type="button" onClick={props.toggleAccount} >Login!</button></Link>
         </div>
       </div>
     </div>

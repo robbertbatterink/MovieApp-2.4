@@ -197,55 +197,39 @@ toggleEditList =() => {
 
   render() {
     return (
-
+        <Router>
         <div className="wrapper">
           <div className="main">
             <div className="container">
               <div className="row">
 
                 {/**LEFT PART */}
-                <Router>
                 <Switch>
                     <div className="col-xs-5 title-container">
                         <Route exact path="/" component={HomePageL} />
                         <Route path="/Login" component={Login} />
+                        <Route exact path="/Users/Gerard" component={Feed} />
+                        <Route path="/Users/Gerard/List/Watched" component={WatchedMovies} />
                     </div>
                 </Switch>
-                </Router>
 
                 {/**RIGHT PART */}
-                <Router>
                 <Switch>
                 <div className="col-xs-7 form-container">
                     <Route exact path="/" component={HomePageR} />
+                    <Route path="/Users/Gerard" component={PersonalPage}/>
                  {this.state.ShowPersonalPage ? <Personal /> : null}
                   {this.state.ShowPersonalPage ? <div> <Logout logout={this.toggleWelcomeView}/> <Top5List /> <Watched back={this.toggleAccount} watchedList={this.toggleEditList}/> <Reviews /> <Events /></div>: null}
                   {this.state.ShowPerson ? <PersonMovie /> : null}
                   {this.state.ShowPerson ? <MyPage myPage={this.toggleAccount}/> : null}
-                  {this.state.LoggedinBool ? 
-                  <div>
-                  <Titles
-                    title={this.state.WelcomeTitle}
-                    subtitle={this.state.SubTitle}/>                  
-                    </div>: null }
-                    {this.state.ShowMetaDataBool ?
-                    <div>
-                        <MovieMetaData
-                        metaReleaseDate={this.state.MovieMetaData[0].ReleaseDate}
-                        metaDuration={this.state.MovieMetaData[1].Duration}
-                        metaGenre={this.state.MovieMetaData[2].Genre}
-                        metaPC={this.state.MovieMetaData[3].PC}
-                        metaDescription={this.state.MovieMetaData[4].Description}/>
-
-                    </div> : null }
-                </div> 
+                  </div>
                 </Switch>
-                </Router>
+
               </div>
             </div>
           </div>
         </div>
-
+    </Router>
     ); // End of return
   }
 };
@@ -258,12 +242,10 @@ const HomePageR = () => {
     return (
     <div>
     <Movieslist click={this.toggleDetailView} />
-    <Router>
         <div>
         <Link to="/Login"><button onClick={this.toggleLoginView}>Login</button></Link>
-        <button onClick={this.toggleRegisterView}>Register</button>
+        <Link to="/Register"><button onClick={this.toggleRegisterView}>Register</button></Link>
         </div>
-    </Router>
     </div>
     );
 };
@@ -272,4 +254,27 @@ const Login = () => {
     return <LoginPage /> 
 }
 
+const Feed = () => {
+    return <Feedlist />
+}
+
+const PersonalPage = () => {
+    return (
+    <div>
+    <Personal />
+    <Link to="/"><Logout /></Link>
+    <Link to="/Users/Gerard/List/Watched"><Watched /></Link>
+    <Link to="/Users/Gerard/List/Top5"><Top5List /></Link>
+    <Link to="/Users/Gerard/List/Reviews"><Reviews /></Link>
+    <Link to="/Users/Gerard/List/Events"><Events /></Link>
+    <Movieslist click={this.toggleDetailView} />
+    </div>
+    );
+}
+
+const WatchedMovies = () => {
+    return (
+        <EditList />
+    );
+}
 export default App;
