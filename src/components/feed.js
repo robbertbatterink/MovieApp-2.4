@@ -1,5 +1,6 @@
 import React, { Component }  from "react";
 import { findDOMNode } from "react-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import $ from 'jquery';
 
 const getDetailPage = () => {
@@ -18,7 +19,7 @@ const Feedlist = props => (
 		<h3><span class="badge">Personal Feed:</span></h3>
                 <div class="scrollbar feed_comments" id="style-2">
 		<ul class="feed_items">
-
+                <Link to="/Users/Gerard/Friends/Henk">
 			<li onClick={props.getPerson} id="1" >
                             <div class="media">
                                 <div class="media-left">
@@ -30,6 +31,7 @@ const Feedlist = props => (
                                 </div>
                             </div>
 			</li>
+                        </Link>
 			<li>
                             <div class="media">
                                 <div class="media-left">
