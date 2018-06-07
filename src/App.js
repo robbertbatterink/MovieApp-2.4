@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 import Titles from "./components/Titles";
 import Feedlist from "./components/feed";
@@ -203,27 +204,26 @@ toggleEditList =() => {
               <div className="row">
 
                 {/**LEFT PART */}
-                <div className="col-xs-5 title-container">
-                {this.state.WelcomeImageBool ? <WelcomeImage/> : null}
-                {this.state.ShowDetailImageBool ? <MovieDetailImage /> : null}
-                {this.state.LoginViewBool ? <LoginPage toggleAccount={this.toggleAccount}/> : null }
-                {this.state.ShowRegisterBool ? <RegisterView /> : null}
-                {this.state.ShowFeed ? <Feedlist getPerson={this.togglePerson}/> : null}
-                {this.state.EditListBool ? <EditList back={this.toggleAccount}/> : null}
-                {this.state.ShowPerson ? <PersonInfo /> : null}
-                </div>
-
+                <Router>
+                <Switch>
+                    <div className="col-xs-5 title-container">
+                        <Route exact path="/" component={HomePageL} />
+                        <Route path="/Login" component={Login} />
+                    </div>
+                </Switch>
+                </Router>
 
                 {/**RIGHT PART */}
+                <Router>
+                <Switch>
                 <div className="col-xs-7 form-container">
+                    <Route exact path="/" component={HomePageR} />
                  {this.state.ShowPersonalPage ? <Personal /> : null}
                   {this.state.ShowPersonalPage ? <div> <Logout logout={this.toggleWelcomeView}/> <Top5List /> <Watched back={this.toggleAccount} watchedList={this.toggleEditList}/> <Reviews /> <Events /></div>: null}
                   {this.state.ShowPerson ? <PersonMovie /> : null}
                   {this.state.ShowPerson ? <MyPage myPage={this.toggleAccount}/> : null}
                   {this.state.LoggedinBool ? 
                   <div>
-                  <button onClick={this.toggleLoginView}>Login</button>
-                  <button onClick={this.toggleRegisterView}>Register</button>
                   <Titles
                     title={this.state.WelcomeTitle}
                     subtitle={this.state.SubTitle}/>                  
@@ -238,13 +238,9 @@ toggleEditList =() => {
                         metaDescription={this.state.MovieMetaData[4].Description}/>
 
                     </div> : null }
-
-
-                    <div>
-                        {this.state.ShowMovieReccListBool ? <Movieslist click={this.toggleDetailView} /> :   <button onClick={this.toggleWelcomeView}>Go Back</button>}
-                    </div>
-
-                </div>
+                </div> 
+                </Switch>
+                </Router>
               </div>
             </div>
           </div>
@@ -253,5 +249,27 @@ toggleEditList =() => {
     ); // End of return
   }
 };
+
+const HomePageL = () => {
+    return <WelcomeImage />
+};
+
+const HomePageR = () => {
+    return (
+    <div>
+    <Movieslist click={this.toggleDetailView} />
+    <Router>
+        <div>
+        <Link to="/Login"><button onClick={this.toggleLoginView}>Login</button></Link>
+        <button onClick={this.toggleRegisterView}>Register</button>
+        </div>
+    </Router>
+    </div>
+    );
+};
+
+const Login = () => {
+    return <LoginPage /> 
+}
 
 export default App;

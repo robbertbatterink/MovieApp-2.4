@@ -29,7 +29,7 @@ class ListItems extends React.Component {
   onClick = () => {
     const { inputValue, movies } = this.state;
     if (inputValue) {
-      const nextState = [...movies, inputValue];
+      const nextState = [inputValue, ...movies];
       this.setState({ movies: nextState, inputValue: '' });
     }
   }
