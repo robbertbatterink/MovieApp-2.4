@@ -208,6 +208,7 @@ toggleEditList =() => {
                     <div className="col-xs-5 title-container">
                         <Route exact path="/" component={HomePageL} />
                         <Route path="/Login" component={Login} />
+                        <Route path="/Register" component={Register} />
                         <Route exact path="/Users/Gerard" component={Feed} />
                         <Route path="/Users/Gerard/List/Watched" component={WatchedMovies} />
                         <Route exaxt path="/Users/Gerard/Friends/Henk" component={PersonPageL}/>
@@ -219,12 +220,9 @@ toggleEditList =() => {
                 <div className="col-xs-7 form-container">
                     <Route exact path="/" component={HomePageR} />
                     <Route exact path="/Login" component={HomePageR} />
+                    <Route exact path="/Register" component={HomePageR} />
                     <Route exact path="/Users/Gerard" component={PersonalPage}/>
                     <Route exact path="/Users/Gerard/Friends/Henk" component={PersonPageR}/>
-                 {this.state.ShowPersonalPage ? <Personal /> : null}
-                  {this.state.ShowPersonalPage ? <div> <Logout logout={this.toggleWelcomeView}/> <Top5List /> <Watched back={this.toggleAccount} watchedList={this.toggleEditList}/> <Reviews /> <Events /></div>: null}
-                  {this.state.ShowPerson ? <PersonMovie /> : null}
-                  {this.state.ShowPerson ? <MyPage myPage={this.toggleAccount}/> : null}
                   </div>
                 </Switch>
 
@@ -246,8 +244,8 @@ const HomePageR = () => {
     <div>
     <Movieslist click={this.toggleDetailView} />
         <div>
-        <Link to="/Login"><button onClick={this.toggleLoginView}>Login</button></Link>
-        <Link to="/Register"><button onClick={this.toggleRegisterView}>Register</button></Link>
+        <Link to="/Login"><button>Login</button></Link>
+        <Link to="/Register"><button>Register</button></Link>
         </div>
         <Titles />
     </div>
@@ -256,6 +254,10 @@ const HomePageR = () => {
 
 const Login = () => {
     return <LoginPage /> 
+}
+
+const Register = () => {
+    return <RegisterView />
 }
 
 const Feed = () => {
