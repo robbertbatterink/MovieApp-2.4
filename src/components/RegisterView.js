@@ -16,41 +16,19 @@ const RegisterView = (props) => {
   }
     return (
       <div class = "RegisterView" >
-      <div className="Login">
-
-      <form><input className="inputLoginField"
-            id="email"
-			      placeholder="E-mail"
-            type="email"
-            value={email}
-            onChange={this.handleChange} />
-        </form>
-
-       <form><input className="inputLoginField"
-            id="password"
-            type="password"
-            placeholder="password"
-            value={password}
-            onChange={this.handleChange} />
-        </form>
-
-      <form><input className="inputLoginField"
-            id="firstName"
-            type="firstName"
-            placeholder="firstName"
-            value={firstName}
-            onChange={this.handleChange} />
-        </form>
-
-        <form><input className="inputLoginField" id="lastName"
-            type="lastName"
-            placeholder="lastName"
-            value={password}
-            onChange={this.handleChange} />
-        </form>
-
-        <button type="button" onClick={this.handleSubmit} >Registreer!</button>
-      </div>
+        <div className="Login">
+            <div class="form">
+                <form action="http://localhost:5000/api/registreren" method="post">
+                <table>
+                    <tr> Voornaam: <input type="text" name="vnaam" /></tr>
+                    <tr> Achternaam: <input type="text" name="anaam" /></tr>
+                    <tr> E-mail: <input type="E-mail" name="email" /></tr>
+                    <tr> Wachtwoord: <input type="password" name="ww" /></tr>
+                    <tr><input className="button" type="submit" value="Registreer" /></tr>
+                </table>
+                </form>
+            </div>
+        </div>
       </div>
     );
 

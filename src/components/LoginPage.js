@@ -26,8 +26,8 @@ const LoginPage = (props) => {
                  type="email"
                  value={email}
                  onChange={handleChange} />
-            </form>
-            <form>
+            
+            
               <input className="inputLoginField" id="password"
                     type="password"
                     placeholder="password"
