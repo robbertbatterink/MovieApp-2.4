@@ -220,6 +220,7 @@ toggleEditList =() => {
                     <Route exact path="/" component={HomePageR} />
                     <Route exact path="/Login" component={HomePageR} />
                     <Route exact path="/Users/Gerard" component={PersonalPage}/>
+                    <Route path="/Users/Gerard/List" component={PersonalPage}/>
                     <Route exact path="/Users/Gerard/Friends/Henk" component={PersonPageR}/>
                  {this.state.ShowPersonalPage ? <Personal /> : null}
                   {this.state.ShowPersonalPage ? <div> <Logout logout={this.toggleWelcomeView}/> <Top5List /> <Watched back={this.toggleAccount} watchedList={this.toggleEditList}/> <Reviews /> <Events /></div>: null}
@@ -286,6 +287,7 @@ const PersonPageR = () => {
     return (
         <div>
         <PersonMovie />
+        <Link to="/Users/Gerard"><MyPage /></Link>
         <Movieslist click={this.toggleDetailView} />
         </div>)
 }
