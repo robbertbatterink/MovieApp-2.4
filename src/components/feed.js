@@ -19,19 +19,19 @@ const Feedlist = props => (
 		<h3><span class="badge">Personal Feed:</span></h3>
                 <div class="scrollbar feed_comments" id="style-2">
 		<ul class="feed_items">
-                <Link to="/Users/Gerard/Friends/Henk">
+                
 			<li onClick={props.getPerson} id="1" >
                             <div class="media">
                                 <div class="media-left">
                                     <div class="media-object person_image"></div>
                                 </div>
                                 <div class="media-body">
-                                      <h4 class="media-heading">Henk</h4>
+                                      <Link to="/Users/Gerard/Friends/Henk"><h4 class="media-heading">Henk</h4></Link>
                                       <p>comment met allemaal informatie </p>
                                 </div>
                             </div>
 			</li>
-                        </Link>
+                        
 			<li>
                             <div class="media">
                                 <div class="media-left">
