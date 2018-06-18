@@ -99,3 +99,7 @@ input:-webkit-autofill {
 .button:active {
   outline: none;
 }
+
+.form {
+   align-self: center;
+}

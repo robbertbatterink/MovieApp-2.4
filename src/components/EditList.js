@@ -50,9 +50,9 @@ class ListItems extends React.Component {
     const { movies, inputValue } = this.state;
     return (
       <div>
-        <List items={movies} onItemClick={this.onDelete} />
         <input class="inputField" type="text" value={inputValue} onChange={this.onChange} />
         <button onClick={this.onClick}>Add</button>
+        <List items={movies} onItemClick={this.onDelete} />
       </div>
     );
   }
@@ -63,15 +63,13 @@ const EditList = (props) => {
         <div className="feedItems_container">
         
             <div className="feed">
+            <h3><span className="badge list-badge">Edit List:</span></h3>
+            <Link to="/Users/Gerard"><button type="button" className="back-button" onClick={props.back} >Back</button></Link>
                 <div className="scrollbar feed_comments" id="style-2">
-                    <div className="media">
-                        <h3><span className="badge list-badge">Edit List:</span></h3>
-                        <ListItems />
-                        <Link to="/Users/Gerard"><button type="button" onClick={props.back} >Back</button></Link>
-                            </div>
-                        </div>
-                    </div>
+                    <ListItems />
                 </div>
+            </div>
+        </div>
         );
     };
 

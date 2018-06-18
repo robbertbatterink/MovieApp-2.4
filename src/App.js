@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import axios from 'axios'
 
 import Titles from "./components/Titles";
 import Feedlist from "./components/feed";
@@ -28,173 +29,29 @@ class App extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-
-        WelcomeTitle: 'MovieAppName',
-        SubTitle: 'Check out new movies based on your friends recommendations',
-        MovieMetaData: [
-            {ReleaseDate: undefined},
-            {Duration: undefined},
-            {Genre: undefined},
-            {PC: undefined},
-            {Description: undefined}
-        ],
-
-          // All the booleans
-          booleanListLeftpart: [],        // array of booleans, use this to store new booleans
-          booleanListRightpart: [],       // array of booleans containg all the booleans of the RIGHT PART
-
-                                            // Individual booleans
-          WelcomeImageBool:       true,     // To display the list of recommendations
-          LoginViewBool:          false,    // Enables/disables the login view
-          ShowMetaDataBool:       false,    // Needs to be false initially
-          ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
-          ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
-          ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
-          ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
-          ShowFeed:               false,    // Enables the Feed in the LEFT PART
-          ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
-          LoggedinBool:           true,    // Enables/disables the login and register buttons
-          ShowPerson:             false,    // Displays the profile of another user
-          EditListBool:           false,    //enables/disables the view for editing movielists
-    }}
-
-  /*
-  TOGGLE LOGIN VIEW Function
-  checks the LoginViewBool and WelcomeImageBool,
-  and sets them accordingly to display the login view correctly
-  */
-  toggleLoginView = () => {
-    this.setState({
-      WelcomeImageBool:       false,    // To display the list of recommendations
-      LoginViewBool:          true,     // Enables/disables the login view
-      ShowMetaDataBool:       false,    // Needs to be false initially
-      ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
-      ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
-      ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
-      ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
-      ShowFeed:               false,    // Enables the Feed in the LEFT PART
-      ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
-      ShowPerson:             false,    // Displays the profile of another user
-      EditListBool:           false,    // Enables/disables the view for editing movielists
-    })
-
-  };
-
-toggleRegisterView = () => {
-    this.setState({
-      WelcomeImageBool:       false,    // To display the list of recommendations
-      LoginViewBool:          false,     // Enables/disables the login view
-      ShowMetaDataBool:       false,    // Needs to be false initially
-      ShowRegisterBool:       true,    // Enables/disables the register view in the LEFT PART
-      ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
-      ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
-      ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
-      ShowFeed:               false,    // Enables the Feed in the LEFT PART
-      ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
-      ShowPerson:             false,    // Displays the profile of another user
-      EditListBool:           false,    // Enables/disables the view for editing movielists
-    })
-  };
-
-// This method checks if the variable checkDetailViewBool is true/false
-/*
-toggleMovieList = () => {
-  const doesShow = this.state.WelcomeImageBool;
-  this.setState({WelcomeImageBool: !doesShow}); // when its true, set this variable to false, and vice versa.
-  const doesShowMetaData = this.state.ShowMetaDataBool;
-  this.setState({ShowMetaDataBool: !doesShowMetaData});
-}
-*/
-toggleDetailView = () => {
-  this.setState({
-    WelcomeTitle: 'MovieName',
-    SubTitle: '2018 (not released)',
-    // BOOLEANS
-      WelcomeImageBool:       false,    // To display the list of recommendations
-      LoginViewBool:          false,     // Enables/disables the login view
-      ShowMetaDataBool:       true,    // Needs to be false initially
-      ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
-      ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
-      ShowDetailImageBool:    true,    // Displays the corresponding movie image in the detail view on the LEFT PART
-      ShowMovieReccListBool:  false,     // Displays the generic movie reccomendations list
-      ShowFeed:               false,    // Enables the Feed in the LEFT PART
-      ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
-      ShowPerson:             false,    // Displays the profile of another user
-      EditListBool:           false,    // Enables/disables the view for editing movielists
-
-    MovieMetaData: [
-      {ReleaseDate: '12-12-13'},
-      {Duration: 'xx:xx:xx'},
-      {Genre: 'Action'},
-      {PC: 'PEGI16'},
-      {Description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sagittis, massa eget gravida suscipit, diam tortor gravida lacus, non convallis ipsum lacus vitae felis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam in erat iaculis justo sollicitudin mattis'}
-  ],
-
-  })
+        username: ''
+    }
+    this.handleGet = this.handleGet.bind(this)
+    this.handlePost = this.handlePost.bind(this)
 }
 
-// Gets the original Welcome view back
-toggleWelcomeView = () => {
-  this.setState({
-    WelcomeTitle: 'MovieAppName',
-    SubTitle: 'Check out new movies based on your friends recommendations',
-    // BOOLEANS
-      WelcomeImageBool:       true,    // To display the list of recommendations
-      LoginViewBool:          false,     // Enables/disables the login view
-      ShowMetaDataBool:       false,    // Needs to be false initially
-      ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
-      ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
-      ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
-      ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
-      ShowFeed:               false,    // Enables the Feed in the LEFT PART
-      ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
-      LoggedinBool:           true,     // Enables/disables the login and register buttons
-      ShowPerson:             false,    // Displays the profile of another user
-      EditListBool:           false,    // Enables/disables the view for editing movielists
-  })
-}
-
-//Shows account when login is pressed
-toggleAccount = () => {
-      this.setState({
-      WelcomeImageBool:       false,    // To display the list of recommendations
-      LoginViewBool:          false,     // Enables/disables the login view
-      ShowMetaDataBool:       false,    // Needs to be false initially
-      ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
-      ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
-      ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
-      ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
-      ShowFeed:               true,    // Enables the Feed in the LEFT PART
-      ShowPersonalPage:       true,    // Enables the personal page in the RIGHT PART
-      LoggedinBool:           false,    // Enables/disables the login and register buttons
-      ShowPerson:             false,    // Displays the profile of another user
-      EditListBool:           false,    // Enables/disables the view for editing movielists
-      
-    })      
-};
-togglePerson = () => {
-    this.setState({
-      WelcomeImageBool:       false,    // To display the list of recommendations
-      LoginViewBool:          false,     // Enables/disables the login view
-      ShowMetaDataBool:       false,    // Needs to be false initially
-      ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
-      ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
-      ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
-      ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
-      ShowFeed:               false,    // Enables the Feed in the LEFT PART
-      ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
-      LoggedinBool:           false,    // Enables/disables the login and register buttons 
-      ShowPerson:             true,    // Displays the profile of another user
-      EditListBool:           false,    // Enables/disables the view for editing movielists
-    })
-}
-toggleEditList =() => {
-    this.setState({
-        ShowFeed:            false,    // Enables the Feed in the LEFT PART
-        EditListBool:        true,      // Enables/disables the view for editing movielists
-    })
-}
-
+  handleGet () {
+    axios.get('http://localhost:5000/')
+      .then(response => this.setState({username: response.data.username}))
+  }
+  
+  handlePost () {
+	axios.post('http://localhost:5000/api/registreren', {
+        "naam": "barry", 
+        "email": 'barrybatsbak@hotmail.com', 
+        "wachtwoord": "geheimpje"
+        }).then(response => { 
+              console.log(response)
+        })
+        .catch(error => {
+          console.log(error.response)
+      });
+  }
   render() {
     return (
         <Router>
@@ -222,6 +79,7 @@ toggleEditList =() => {
                     <Route exact path="/Login" component={HomePageR} />
                     <Route exact path="/Register" component={HomePageR} />
                     <Route exact path="/Users/Gerard" component={PersonalPage}/>
+                    <Route path="/Users/Gerard/List" component={PersonalPage}/>
                     <Route exact path="/Users/Gerard/Friends/Henk" component={PersonPageR}/>
                   </div>
                 </Switch>
@@ -242,7 +100,7 @@ const HomePageL = () => {
 const HomePageR = () => {
     return (
     <div>
-    <Movieslist click={this.toggleDetailView} />
+    <Movieslist />
         <div>
         <Link to="/Login"><button>Login</button></Link>
         <Link to="/Register"><button>Register</button></Link>
@@ -257,7 +115,7 @@ const Login = () => {
 }
 
 const Register = () => {
-    return <RegisterView />
+    return <RegisterView submit={this.handlePost} />
 }
 
 const Feed = () => {
@@ -273,7 +131,7 @@ const PersonalPage = () => {
     <Link to="/Users/Gerard/List/Top5"><Top5List /></Link>
     <Link to="/Users/Gerard/List/Reviews"><Reviews /></Link>
     <Link to="/Users/Gerard/List/Events"><Events /></Link>
-    <Movieslist click={this.toggleDetailView} />
+    <Movieslist />
     </div>
     );
 }
@@ -288,7 +146,8 @@ const PersonPageR = () => {
     return (
         <div>
         <PersonMovie />
-        <Movieslist click={this.toggleDetailView} />
+        <Link to="/Users/Gerard"><MyPage /></Link>
+        <Movieslist />
         </div>)
 }
 

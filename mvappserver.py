@@ -14,7 +14,8 @@ from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'thisissecret'
-CORS(app)
+#CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 Session = sessionmaker(bind=Database.conn)
 session = Session()
@@ -32,29 +33,34 @@ def index():
 	return jsonify(username='wisse',
                    email='w_voortman@hotmail',
                    id=7)
+	
 # accountmanagement
 
-@app.route('/api/registreren', methods=['POST'])
+@app.route('/api/registreren', methods=['POST']) #, methods=['POST']
 def registreren():
-    if request.method == 'POST':
-        vnaam = request.form.get('vnaam')
-        anaam = request.form.get('anaam')
-        email = request.form.get('email')
-        ww = request.form.get('ww')
-        if vnaam and anaam and email and ww:
-            return registreer_gebruiker((vnaam +" "+anaam), email, ww)
-        return "Not enough info"
-    
-def registreer_gebruiker(username, email, password):
-    gebruiker = user(user_name=username, user_email=email, user_password=password)
+	if request.method == 'POST':
+		content = request.get_json()
+		#print(content['naam'])
+		postNaam = content['naam']
+		postEmail = content['email']
+		postPassword = content['wachtwoord']
+		if postNaam and postEmail and postPassword:
+			return registreer_gebruiker(postNaam, postEmail, postPassword)
+		
+		return "Alle verplichte velden invullen svp..."
+		
+def registreer_gebruiker(postNaam, postEmail, postPassword):
+    gebruiker = user(user_name=postNaam, user_email=postEmail, user_password=postPassword)
     
     try:
         session.add(gebruiker)
         session.commit()
     except IntegrityError:
-        print("Dubble enty not allowed")
-    return 'ok'
-    
+        print ("Dubbele entry not allowed")
+        # dit moet nog netjes worden afgehandeld
+        session.rollback()
+    return 'stuff went OK'
+	
 @app.route('/api/login', methods=['GET', 'POST'])
 def login():
 	#if request.methods == 'POST':
