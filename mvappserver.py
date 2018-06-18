@@ -41,7 +41,7 @@ def registreren():
         anaam = request.form.get('anaam')
         email = request.form.get('email')
         ww = request.form.get('ww')
-        if vnaam and anaam + email + ww:
+        if vnaam and anaam and email and ww:
             return registreer_gebruiker((vnaam +" "+anaam), email, ww)
         return "Not enough info"
     

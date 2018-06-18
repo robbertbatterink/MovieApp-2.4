@@ -20,12 +20,12 @@ const RegisterView = (props) => {
             <div class="form">
                 <form action="http://localhost:5000/api/registreren" method="post">
                 <table>
-                    <tr> Voornaam: <input type="text" name="vnaam" /></tr>
-                    <tr> Achternaam: <input type="text" name="anaam" /></tr>
-                    <tr> E-mail: <input type="E-mail" name="email" /></tr>
-                    <tr> Wachtwoord: <input type="password" name="ww" /></tr>
-                    <tr><input className="button" type="submit" value="Registreer" /></tr>
-                </table>
+                    <tr><td>Voornaam: </td><td><input type="text" name="vnaam" /></td></tr>
+                    <tr><td> Achternaam: </td><td><input type="text" name="anaam" /></td></tr>
+                    <tr><td> E-mail: </td><td><input type="E-mail" name="email" /></td></tr>
+                    <tr><td> Wachtwoord: </td><td><input type="password" name="ww" /></td></tr>
+                    </table>
+                    <input className="button" onClick={handleSubmit} value="Registreer" />
                 </form>
             </div>
         </div>
