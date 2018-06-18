@@ -25,7 +25,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return session.query(user).filter(user.user_name=='Wisse').first()
+    return session.query(user).filter(user.user_name=='barry').first()
 
 
 @app.route('/')
@@ -40,7 +40,7 @@ def index():
 def registreren():
 	if request.method == 'POST':
 		content = request.get_json()
-		#print(content['naam'])
+		print(content['naam'])
 		postNaam = content['naam']
 		postEmail = content['email']
 		postPassword = content['wachtwoord']
@@ -50,35 +50,61 @@ def registreren():
 		return "Alle verplichte velden invullen svp..."
 		
 def registreer_gebruiker(postNaam, postEmail, postPassword):
-    gebruiker = user(user_name=postNaam, user_email=postEmail, user_password=postPassword)
+    gebruiker = user(user_name= postNaam, user_email= postEmail, user_password= postPassword)
     
     try:
         session.add(gebruiker)
         session.commit()
     except IntegrityError:
-        print ("Dubbele entry not allowed")
-        # dit moet nog netjes worden afgehandeld
         session.rollback()
-    return 'stuff went OK'
+        return jsonify(error='True',
+            title='regstration failed',
+            message='This email adress is already in use.')
+			
+    uservar = session.query(user).filter(user.user_email==postEmail).filter(user.user_password==postPassword).first()
+    login_user(uservar)
+    return 'registratie succesful'
+	#return jsonify(error='False',
+    #       title='Login succesful',
+    #        message='You are now logged in',
+    #        username= current_user.user_name,
+    #        userid= current_user.user_id)
 	
 @app.route('/api/login', methods=['GET', 'POST'])
 def login():
-	#if request.methods == 'POST':
-		uservar = session.query(user).filter(user.user_id==7).first()
-		print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-		print(uservar)
-		print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-		login_user(uservar)
-		return 'You are now logged in!'
-	#else:
-	#	return show_login()
+	if request.method == 'POST':
+		content = request.get_json()
+		postEmail = content['email']
+		postPassword = content['wachtwoord']
+		uservar = session.query(user).filter(user.user_email==postEmail).filter(user.user_password==postPassword).first()
+		if uservar == None:
+			return jsonify(error='True',
+			title='Login failed',
+			message='Invalid Email or Password.')
+		else:		
+			print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+			print(uservar)
+			print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+			login_user(uservar)
+			
+			return jsonify(error='False',
+			title='Login succesful',
+			message='You are now logged in',
+			username= current_user.user_name,
+			userid= current_user.user_id)
+			
+
+	
 
 @app.route('/api/logout')
 @login_required
 def logout():
     logout_user()
-    return 'You are now logged out!'		
-
+    return jsonify(error='False',
+			title='Login succesful',
+			message='You are now logged in')
+			
+			
 @app.route('/api/gebruiker')
 @login_required
 def ingelogdegebruiker():

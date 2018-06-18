@@ -29,12 +29,22 @@ class App extends React.Component {
   constructor(props){
     super(props)
     this.state = {
+        userid: '',
         username: ''
     }
+    
+    this.handler = this.handler.bind(this)
     this.handleGet = this.handleGet.bind(this)
     this.handlePost = this.handlePost.bind(this)
 }
 
+  handler = (userID) => {
+      console.log("ben hier")
+    this.setState({
+        userid: "userID"
+    })
+  }
+  
   handleGet () {
     axios.get('http://localhost:5000/')
       .then(response => this.setState({username: response.data.username}))
@@ -85,6 +95,8 @@ class App extends React.Component {
                 </Switch>
 
               </div>
+              hoi: {this.state.userid}<br/>
+                      {this.state.username}
             </div>
           </div>
         </div>
@@ -111,11 +123,11 @@ const HomePageR = () => {
 };
 
 const Login = () => {
-    return <LoginPage /> 
+    return <LoginPage sendData={this.handler}/> 
 }
 
 const Register = () => {
-    return <RegisterView submit={this.handlePost} />
+    return <RegisterView />
 }
 
 const Feed = () => {
