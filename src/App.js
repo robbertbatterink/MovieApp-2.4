@@ -33,34 +33,27 @@ class App extends React.Component {
         username: ''
     }
     
-    this.handler = this.handler.bind(this)
     this.handleGet = this.handleGet.bind(this)
-    this.handlePost = this.handlePost.bind(this)
+    this.handleUser = this.handleUser.bind(this)
 }
-
-  handler = (userID) => {
-      console.log("ben hier")
-    this.setState({
-        userid: "userID"
-    })
-  }
   
-  handleGet () {
-    axios.get('http://localhost:5000/')
-      .then(response => this.setState({username: response.data.username}))
-  }
-  
-  handlePost () {
-	axios.post('http://localhost:5000/api/registreren', {
-        "naam": "barry", 
-        "email": 'barrybatsbak@hotmail.com', 
-        "wachtwoord": "geheimpje"
-        }).then(response => { 
-              console.log(response)
+    handleGet () {
+      axios.get('http://localhost:5000/')
+        .then(response => this.setState({username: response.data.username}))
+    }
+    handleUser () {
+	axios.post('http://localhost:5000/api/gebruiker'
+        ).then(response => { 
+            console.log(response);
+            this.setState({ userName: response.data.username, userID: response.data.userid});
         })
         .catch(error => {
           console.log(error.response)
       });
+  }
+  
+  componentDidMount() {
+      this.handleUser()
   }
   render() {
     return (
@@ -76,9 +69,9 @@ class App extends React.Component {
                         <Route exact path="/" component={HomePageL} />
                         <Route path="/Login" component={Login} />
                         <Route path="/Register" component={Register} />
-                        <Route exact path="/Users/Gerard" component={Feed} />
-                        <Route path="/Users/Gerard/List/Watched" component={WatchedMovies} />
-                        <Route exaxt path="/Users/Gerard/Friends/Henk" component={PersonPageL}/>
+                        <Route exact path="/Users/:userID" component={Feed} />
+                        <Route path="/Users/:userID/List/Watched" component={WatchedMovies} />
+                        <Route exaxt path="/Users/:userID/Friends/:userID" component={PersonPageL}/>
                     </div>
                 </Switch>
 
@@ -88,9 +81,9 @@ class App extends React.Component {
                     <Route exact path="/" component={HomePageR} />
                     <Route exact path="/Login" component={HomePageR} />
                     <Route exact path="/Register" component={HomePageR} />
-                    <Route exact path="/Users/Gerard" component={PersonalPage}/>
-                    <Route path="/Users/Gerard/List" component={PersonalPage}/>
-                    <Route exact path="/Users/Gerard/Friends/Henk" component={PersonPageR}/>
+                    <Route exact path="/Users/:userID" component={PersonalPage}/>
+                    <Route path="/Users/:userID/List" component={PersonalPage}/>
+                    <Route exact path="/Users/:userID/Friends/:userID" component={PersonPageR}/>
                   </div>
                 </Switch>
 
@@ -138,11 +131,6 @@ const PersonalPage = () => {
     return (
     <div>
     <Personal />
-    <Link to="/"><Logout /></Link>
-    <Link to="/Users/Gerard/List/Watched"><Watched /></Link>
-    <Link to="/Users/Gerard/List/Top5"><Top5List /></Link>
-    <Link to="/Users/Gerard/List/Reviews"><Reviews /></Link>
-    <Link to="/Users/Gerard/List/Events"><Events /></Link>
     <Movieslist />
     </div>
     );

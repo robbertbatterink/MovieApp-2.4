@@ -1,10 +1,48 @@
-import React from "react";
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
+import axios from 'axios'
 
-const getDetailPage = () => {
-	console.log("Get Detail");
-};
-
-const PersonInfo = props => (        
+class PersonInfo extends React.Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            thisUser: true,
+            userName: '',
+            userID: ''
+        }
+        
+        this.handleUser = this.handleUser.bind(this)
+    }
+     handleUser () {
+	axios.post('http://localhost:5000/api/gebruiker'
+        ).then(response => { 
+            console.log(response);
+            if(response.data.message === "False"){
+                this.setState({ thisUser: false })
+            } else {
+            this.setState({ userName: response.data.username, userID: response.data.userid});
+            }
+        })
+        .catch(error => {
+          console.log(error.response)
+      });
+  }
+  
+  componentDidMount() {
+      this.handleUser()
+  }
+     render() {
+        const { thisUser } = this.state;
+      
+        if (!thisUser) {
+            return (
+                    <div>
+                        <PersonInfo />
+                    </div>
+                    );
+        }
+        else {
+         return(
         <div class="feedItems_container">
         
             <div class="feed">
@@ -26,7 +64,8 @@ const PersonInfo = props => (
                 </div>
             </div>
 	</div>
-    
-);
-
+        )
+     }
+    }
+    }
 export default PersonInfo;

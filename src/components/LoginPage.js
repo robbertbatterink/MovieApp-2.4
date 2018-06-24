@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
 import "./LoginPage.css";
 import axios from 'axios'
 
@@ -7,6 +7,8 @@ class LoginPage extends React.Component {
   constructor(props){
     super(props)
     this.state = {
+        loginSuccesfull: false,
+        userID: '',
         email: '',
         password: ''
     }
@@ -35,7 +37,10 @@ class LoginPage extends React.Component {
         "wachtwoord": this.state.password
         }).then(response => { 
               console.log(response)
-              this.setState({error: response.data.error,title: response.data.title, message: response.data.message, username: response.data.username, userid: response.data.userid})
+              this.setState({error: response.data.error,title: response.data.title, message: response.data.message, username: response.data.username, userID: response.data.userid})
+              if(response.data.error !== "True") {
+                  this.setState({ loginSuccesfull: true})
+              }
 
         })
         .catch(error => {
@@ -43,6 +48,11 @@ class LoginPage extends React.Component {
       });
   }
   render() {
+      const { loginSuccesfull } = this.state;
+      
+      if (loginSuccesfull) {
+          return <Redirect to={"/Users/"+ this.state.userID} />;
+      }
       return (      
         <div className = "LoginPage" >
         <div>
@@ -55,9 +65,7 @@ class LoginPage extends React.Component {
                 </table>
             </form>
             <button onClick={this.handlePost}>login</button>
-            <button onClick={this.sendhData}>send data</button>
             </div>
-          <Link to="/Users/Gerard"><button type="button" onClick={this.handleGet} >Login!</button></Link>
         </div>
         <div>
         

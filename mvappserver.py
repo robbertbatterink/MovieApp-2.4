@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, redirect, url_for
 from flask_cors import CORS
 
 import Database
@@ -23,16 +23,20 @@ session = Session()
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+
 @login_manager.user_loader
 def load_user(user_id):
-    return session.query(user).filter(user.user_name=='barry').first()
+    return session.query(user).filter(user.user_id==user_id).first()
 
 
-@app.route('/')
-def index():
-	return jsonify(username='wisse',
-                   email='w_voortman@hotmail',
-                   id=7)
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def index(path):
+    return render_template('index.html')
+
+@app.route('/Users/<string:user_id>')
+def userpage(user_id):
+    return render_template('index.html')
 	
 # accountmanagement
 
@@ -73,42 +77,47 @@ def registreer_gebruiker(postNaam, postEmail, postPassword):
 @app.route('/api/login', methods=['GET', 'POST'])
 def login():
 	if request.method == 'POST':
-		content = request.get_json()
-		postEmail = content['email']
-		postPassword = content['wachtwoord']
-		uservar = session.query(user).filter(user.user_email==postEmail).filter(user.user_password==postPassword).first()
-		if uservar == None:
-			return jsonify(error='True',
-			title='Login failed',
-			message='Invalid Email or Password.')
-		else:		
-			print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-			print(uservar)
-			print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-			login_user(uservar)
-			
-			return jsonify(error='False',
-			title='Login succesful',
-			message='You are now logged in',
-			username= current_user.user_name,
-			userid= current_user.user_id)
+            content = request.get_json()
+            postEmail = content['email']
+            postPassword = content['wachtwoord']
+            uservar = session.query(user).filter(user.user_email==postEmail).filter(user.user_password==postPassword).first()
+            if uservar == None:
+                return jsonify(error='True',
+                title='Login failed',
+                message='Invalid Email or Password.')
+            else:		
+                print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+                print(uservar)
+                print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+                login_user(uservar, remember=True)
+                print(current_user.user_name)
+                redirect(url_for('/Users/' + current_user.user_id))
+
+                return jsonify(error='False',
+                title='Login succesful',
+                message='You are now logged in',
+                username= current_user.user_name,
+                userid= current_user.user_id)
 			
 
 	
 
-@app.route('/api/logout')
+@app.route('/api/logout', methods=['GET'])
 @login_required
 def logout():
     logout_user()
     return jsonify(error='False',
-			title='Login succesful',
-			message='You are now logged in')
+			title='Logout succesfull',
+			message='You are now logged out')
 			
 			
-@app.route('/api/gebruiker')
-@login_required
+@app.route('/api/gebruiker', methods=['GET', 'POST'])
 def ingelogdegebruiker():
-	return current_user.user_name
+    if current_user.is_authenticated:
+            return jsonify(username = current_user.user_name,
+            userid = current_user.user_id)
+    else:
+            return jsonify(message= "False")
 	
 @app.route('/api/gebruiker/<int:gebruiker_id>', methods=['GET', 'PUT', 'DELETE'])
 def gebruiker():

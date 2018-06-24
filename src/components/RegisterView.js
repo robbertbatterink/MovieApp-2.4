@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
 import "./RegisterView.css";
 import axios from 'axios'
 
@@ -6,6 +7,7 @@ class RegisterView extends React.Component {
   constructor(props){
     super(props)
     this.state = {
+        confirm: false,
         userName: '',
         email: '',
         password: ''       
@@ -17,18 +19,20 @@ class RegisterView extends React.Component {
 }
 
   handleGet () {
-    axios.get('http://localhost:5000/')
-      .then(response => this.setState({username: response.data.username}))
+    axios.get('http://localhost:5000/Login')
+      .then(response => console.log(response))
   }
   
   handlePost () {
-        alert('A name was submitted: ' + this.state.userName + this.state.email + this.state.password);
 	axios.post('http://localhost:5000/api/registreren', {
         "naam": this.state.userName, 
         "email": this.state.email, 
         "wachtwoord": this.state.password
         }).then(response => { 
-              console.log(response)
+            if(response.data.error !== "True"){
+              this.setState({ confirm: true});
+                }
+              console.log(response);
         })
         .catch(error => {
           console.log(error.response)
@@ -41,6 +45,11 @@ class RegisterView extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   }
   render() {
+      const { confirm } = this.state;
+      
+      if (confirm) {
+          return <Redirect to="/Login"/>;
+      }
       return (
       <div class = "RegisterView" >
         <div className="Login">

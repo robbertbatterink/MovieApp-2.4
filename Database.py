@@ -56,29 +56,34 @@ class rating(Base):
 	rating_timestamp = sqla.Column('rating_timestamp', sqla.DateTime, nullable=False)
 	
 class user(Base):
-	__tablename__= 'user'
-	user_id = sqla.Column('user_id', sqla.Integer, autoincrement=True, primary_key=True)
-	user_name = sqla.Column('user_name', sqla.VARCHAR(45), nullable=False, unique=True )
-	user_email = sqla.Column('user_email', sqla.VARCHAR(45), nullable=False, unique=True)
-	user_password = sqla.Column('user_password', sqla.VARCHAR(45), nullable=False )
-	
-	@property
-	def is_active(self):
-		return True
+    __tablename__= 'user'
+    user_id = sqla.Column('user_id', sqla.Integer, autoincrement=True, primary_key=True)
+    user_name = sqla.Column('user_name', sqla.VARCHAR(45), nullable=False, unique=True )
+    user_email = sqla.Column('user_email', sqla.VARCHAR(45), nullable=False, unique=True)
+    user_password = sqla.Column('user_password', sqla.VARCHAR(45), nullable=False )
 
-	@property
-	def is_authenticated(self):
-		return True
-		
-	@property
-	def is_anonymous(self):
-		return False
-	
-	def get_id(self):
-		try:
-			return(self.user_id)
-		except AttributeError:
-			raise NotImplementedError('No `id` attribute')
+    def __init__(self, user_name, user_password, user_email):
+        self.user_name = user_name
+        self.user_password = user_password
+        self.user_email = user_email
+
+    def is_active(self):
+        return True
+
+    def is_authenticated(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        try:
+                return(self.user_id)
+        except AttributeError:
+                raise NotImplementedError('No `id` attribute')
+
+    def __repr__(self):
+        return (self.user_name)
 		
 class user_activety(Base):
 	__tablename__= 'user_activety'
