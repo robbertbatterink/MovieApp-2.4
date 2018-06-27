@@ -37,7 +37,17 @@ def index(path):
 @app.route('/Users/<string:user_id>')
 def userpage(user_id):
     return render_template('index.html')
-	
+
+@app.route('/api/list/:movielist')
+@login_required
+def returnList(movielist):
+    if request.method == 'GET':
+        if movielist == 'Watched':
+            movies = session.query(user_activety).filter(user_activety.user_id==current_user.user_id).filter(user_activety.activity=='watched')
+            mname = session.query(movie).filter(movie.movie_id==movies.movie_id)
+            return jsonify(movies= [mname.movie_name])
+        
+            
 # accountmanagement
 
 @app.route('/api/registreren', methods=['POST']) #, methods=['POST']

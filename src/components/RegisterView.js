@@ -10,7 +10,8 @@ class RegisterView extends React.Component {
         confirm: false,
         userName: '',
         email: '',
-        password: ''       
+        password: '',
+        bio: ''
     }
     
     this.handleChange = this.handleChange.bind(this)
@@ -27,7 +28,8 @@ class RegisterView extends React.Component {
 	axios.post('http://localhost:5000/api/registreren', {
         "naam": this.state.userName, 
         "email": this.state.email, 
-        "wachtwoord": this.state.password
+        "wachtwoord": this.state.password,
+        "bio": this.state.bio
         }).then(response => { 
             if(response.data.error !== "True"){
               this.setState({ confirm: true});
@@ -59,6 +61,7 @@ class RegisterView extends React.Component {
                     <tr> Username <input type="text" name="userName" value={this.state.userName} onChange={this.handleChange} /></tr>
                     <tr> E-mail: <input type="E-mail" name="email" value={this.state.email} onChange={this.handleChange}/></tr>
                     <tr> Wachtwoord: <input type="password" name="password" value={this.state.password} onChange={this.handleChange}/></tr>
+                    <tr> Bio: <input type="text" name="bio" value={this.state.bio} onChange={this.handleChange}/></tr>
                 </table>
                 </form>
                 <button onClick={this.handlePost}>register</button>

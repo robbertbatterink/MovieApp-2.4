@@ -28,9 +28,6 @@ class PersonInfo extends React.Component {
       });
   }
   
-  componentDidMount() {
-      this.handleUser()
-  }
      render() {
         const { thisUser } = this.state;
       

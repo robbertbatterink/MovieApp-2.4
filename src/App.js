@@ -70,7 +70,7 @@ class App extends React.Component {
                         <Route path="/Login" component={Login} />
                         <Route path="/Register" component={Register} />
                         <Route exact path="/Users/:userID" component={Feed} />
-                        <Route path="/Users/:userID/List/Watched" component={WatchedMovies} />
+                        <Route path="/Users/:userID/List/:movieList" component={WatchedMovies} userID={this.state.userID} />
                         <Route exaxt path="/Users/:userID/Friends/:userID" component={PersonPageL}/>
                     </div>
                 </Switch>
@@ -88,8 +88,6 @@ class App extends React.Component {
                 </Switch>
 
               </div>
-              hoi: {this.state.userid}<br/>
-                      {this.state.username}
             </div>
           </div>
         </div>
@@ -136,9 +134,11 @@ const PersonalPage = () => {
     );
 }
 
-const WatchedMovies = () => {
+const WatchedMovies = ({ match }) => {
     return (
-        <EditList />
+            <div>
+        <EditList/>
+                </div>
     );
 }
 

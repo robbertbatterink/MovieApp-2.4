@@ -14,7 +14,8 @@ class Personal extends React.Component {
         this.state = {
             thisUser: true,
             userName: '',
-            userID: ''
+            userID: '',
+            userBIO: '',
         }
         
         this.handleUser = this.handleUser.bind(this)
@@ -27,7 +28,7 @@ class Personal extends React.Component {
             if(response.data.message === "False"){
                 this.setState({ thisUser: false })
             } else {
-            this.setState({ userName: response.data.username, userID: response.data.userid});
+            this.setState({ userName: response.data.username, userID: response.data.userid, userBIO: response.data.userbio});
             }
         })
         .catch(error => {
@@ -59,16 +60,14 @@ class Personal extends React.Component {
             <div class="media-body person-info">
                   <h4 class="media-heading">{this.state.userName}</h4>
                   <p>Hallo {this.state.userName}!</p>
-                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
-                  <p>It has survived not only five centuries, but also the leap into electronic typesetting,</p>
-                  <p>remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                  <p>{this.state.userBIO}</p>
             </div>
         </div>
         <Logout />
-        <Link to="/Users/:userID/List/Watched"><Watched /></Link>
-        <Link to="/Users/:userID/List/Top5"><Top5List /></Link>
-        <Link to="/Users/:userID/List/Reviews"><Reviews /></Link>
-        <Link to="/Users/:userID/List/Events"><Events /></Link>
+        <Link to={"/Users/" + this.state.userID + "/List/Watched"}><Watched userID={this.state.userID}/></Link>
+        <Link to={"/Users/" + this.state.userID + "/List/Top5"}><Top5List /></Link>
+        <Link to={"/Users/" + this.state.userID + "/List/Reviews"}><Reviews /></Link>
+        <Link to={"/Users/" + this.state.userID + "/List/Events"}><Events /></Link>
     </div>
         );
     }
