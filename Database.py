@@ -1,45 +1,43 @@
 import json
 import datetime
 import sqlalchemy as sqla
+from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-
-conn = sqla.create_engine('mysql+pymysql://root@localhost/alchemytest2?host=localhost?port=3306') 
+import datetime
+conn = sqla.create_engine('mysql+pymysql://root@localhost/alchemytest?host=localhost?port=3306?charset=utf8') 
 Base = declarative_base()
-		
+
 class user(Base):
-    __tablename__= 'user'
-    user_id = sqla.Column('user_id', sqla.Integer, autoincrement=True, primary_key=True)
-    user_name = sqla.Column('user_name', sqla.VARCHAR(45), nullable=False, unique=True )
-    user_email = sqla.Column('user_email', sqla.VARCHAR(45), nullable=False, unique=True)
-    user_password = sqla.Column('user_password', sqla.VARCHAR(45), nullable=False )
-    user_bio = sqla.Column('user_bio', sqla.VARCHAR(45))
+	__tablename__= 'user'
+	user_id = sqla.Column('user_id', sqla.Integer, autoincrement=True, primary_key=True)
+	user_name = sqla.Column('user_name', sqla.VARCHAR(45), nullable=False, unique=True )
+	user_email = sqla.Column('user_email', sqla.VARCHAR(45), nullable=False, unique=True)
+	user_password = sqla.Column('user_password', sqla.VARCHAR(45), nullable=False )
+	user_bio = sqla.Column('user_bio', sqla.VARCHAR(45))
+	
+	@property
+	def is_active(self):
+		return True
 
-    def __init__(self, user_name, user_password, user_email, user_bio):
-        self.user_name = user_name
-        self.user_password = user_password
-        self.user_email = user_email
-        self.user_bio = user_bio
-
-    def is_active(self):
-        return True
-
-    def is_authenticated(self):
-        return True
-
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        try:
-                return(self.user_id)
-        except AttributeError:
-                raise NotImplementedError('No `id` attribute')
-
-    def __repr__(self):
-        return (self.user_name)
+	@property
+	def is_authenticated(self):
+		return True
 		
+	@property
+	def is_anonymous(self):
+		return False
+	
+	def get_id(self):
+		try:
+			return(self.user_id)
+		except AttributeError:
+			raise NotImplementedError('No `id` attribute')
+			
+	def _repr_(self):
+		return (self.user_name)
+	
 class category(Base):
 	__tablename__= 'category'
 	
@@ -50,22 +48,19 @@ class movie(Base):
 	__tablename__= 'movie'
 	
 	movie_id = sqla.Column('movie_id', sqla.Integer, autoincrement=True, primary_key=True)
-	movie_name = sqla.Column('movie_name', sqla.VARCHAR(45), nullable=False , unique=True)
+	movie_name = sqla.Column('movie_name', sqla.VARCHAR(50), nullable=False , unique=True)
 	movie_runtime = sqla.Column('movie_runtime', sqla.Integer )
-	movie_description = sqla.Column('movie_description', sqla.VARCHAR(45), unique=True )
-	movie_category = sqla.Column('movie_category', sqla.Integer,)
-	movie_thumbnail = sqla.Column('movie_thumbnail', sqla.VARCHAR(45), nullable=True, unique=True )
-	movie_trailer = sqla.Column('movie_trailer', sqla.VARCHAR(45), nullable=True, unique=True )
+	movie_description = sqla.Column('movie_description', sqla.VARCHAR(250), unique=False )
+	movie_category = sqla.Column('movie_category', sqla.VARCHAR(100),)
+	movie_thumbnail = sqla.Column('movie_thumbnail', sqla.VARCHAR(150), nullable=True, unique=True )
+	movie_trailer = sqla.Column('movie_trailer', sqla.VARCHAR(150), nullable=True, unique=True )
 	movie_trailer_runtime = sqla.Column('movie_trailer_runtime', sqla.Integer )
 	movie_release_date = sqla.Column('movie_release_date', sqla.DATE )
-	movie_added_date = sqla.Column('movie_added_date', sqla.DateTime, nullable=True )
+	movie_added_date = sqla.Column('movie_added_date', sqla.DateTime, nullable=True, default=datetime.datetime.utcnow)
 	
-	
-
-
 class friends(Base):
 	__tablename__= 'friends'
-	friends_id = sqla.Column('user_id', sqla.Integer, autoincrement=True, primary_key=True)
+	friends_id = sqla.Column('friends_id', sqla.Integer, autoincrement=True, primary_key=True)
 	friend_one_id = sqla.Column('friend_one_id', sqla.Integer, ForeignKey("user.user_id"), nullable=False)
 	friend_two_id = sqla.Column('friend_two_id', sqla.Integer, ForeignKey("user.user_id"), nullable=False)
 
@@ -77,7 +72,6 @@ class friend_request(Base):
 	receiver_id = sqla.Column('receiver_id', sqla.Integer, ForeignKey("user.user_id"), nullable=False)
 	request_timestamp = sqla.Column('request_timestamp', sqla.DateTime, nullable=False, default=datetime.datetime.utcnow)
 
-	
 class rating(Base):
 	__tablename__= 'rating'
 	

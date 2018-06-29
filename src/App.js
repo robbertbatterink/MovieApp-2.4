@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
-import axios from 'axios'
+import axios from 'axios';
+import PropTypes from 'prop-types';               // needed for passing location parameters (Install dependency : "npm install -- save prop-types")
 
 import Titles from "./components/Titles";
 import Feedlist from "./components/feed";
@@ -22,6 +23,8 @@ import Events from "./components/EventBtn";
 import Reviews from "./components/ReviewsBtn";
 import Top5List from "./components/Top5Btn";
 import Watched from "./components/WatchedBtn";
+import SearchPage from "./components/SearchPage";
+import SearchResult from "./components/SearchResult";
 //import icons from 'glyphicons'
 
 import "./App.css";
@@ -30,12 +33,23 @@ class App extends React.Component {
     super(props)
     this.state = {
         userid: '',
-        username: ''
-    }
-    
+        username: '',
+        query: '',
+        resultUser: [],
+    }   
     this.handleGet = this.handleGet.bind(this)
     this.handleUser = this.handleUser.bind(this)
-}
+    }
+
+    formSearchPage(params) {
+        this.setState({
+            resultMovie: params
+        })
+    }
+    
+    setQuery = (event) => {
+        this.setState({query: event.target.value})
+    }
   
     handleGet () {
       axios.get('http://localhost:5000/')
@@ -55,7 +69,8 @@ class App extends React.Component {
   componentDidMount() {
       this.handleUser()
   }
-  render() {
+  
+render() {
     return (
         <Router>
         <div className="wrapper">
@@ -69,9 +84,11 @@ class App extends React.Component {
                         <Route exact path="/" component={HomePageL} />
                         <Route path="/Login" component={Login} />
                         <Route path="/Register" component={Register} />
+                        <Route path="/Search" render={()=><SearchResult query={this.state.query}/>} />
                         <Route exact path="/Users/:userID" component={Feed} />
                         <Route path="/Users/:userID/List/:movieList" component={WatchedMovies} userID={this.state.userID} />
                         <Route exaxt path="/Users/:userID/Friends/:userID" component={PersonPageL}/>
+                        <Route exact path="/filminfo/:movieName/:movieID" component={MovieDetailL}/>
                     </div>
                 </Switch>
 
@@ -79,11 +96,14 @@ class App extends React.Component {
                 <Switch>
                 <div className="col-xs-7 form-container">
                     <Route exact path="/" component={HomePageR} />
-                    <Route exact path="/Login" component={HomePageR} />
-                    <Route exact path="/Register" component={HomePageR} />
+                    <Route path="/Login" component={HomePageR} />
+                    <Route path="/Register" component={HomePageR} />
+                    <Route path="/Search" render={()=><div><SearchPage passQuery={this.setQuery}/> <Movieslist /></div>} />
                     <Route exact path="/Users/:userID" component={PersonalPage}/>
                     <Route path="/Users/:userID/List" component={PersonalPage}/>
                     <Route exact path="/Users/:userID/Friends/:userID" component={PersonPageR}/>
+                    <Route exact path="/filminfo/:movieName/:movieID" component={MovieDetailR}/>
+
                   </div>
                 </Switch>
 
@@ -96,6 +116,14 @@ class App extends React.Component {
   }
 };
 
+const MovieDetailL = () => {
+    return <MovieDetailImage />
+}
+
+const MovieDetailR = () => {
+    return <MovieMetaData />
+}
+
 const HomePageL = () => {
     return <WelcomeImage />
 };
@@ -107,14 +135,28 @@ const HomePageR = () => {
         <div>
         <Link to="/Login"><button>Login</button></Link>
         <Link to="/Register"><button>Register</button></Link>
+        <Link to="/Search"><button>Search</button></Link>
         </div>
         <Titles />
     </div>
     );
 };
 
+const SearchR = () => {
+    return (
+    <div>
+        <SearchPage />
+        <Movieslist />
+    </div>
+    );
+}
+
+const SearchL = () => {
+    return <SearchResult />
+}
+
 const Login = () => {
-    return <LoginPage sendData={this.handler}/> 
+    return <LoginPage /> 
 }
 
 const Register = () => {
