@@ -24,7 +24,7 @@ import Reviews from "./components/ReviewsBtn";
 import Top5List from "./components/Top5Btn";
 import Watched from "./components/WatchedBtn";
 import SearchPage from "./components/SearchPage";
-import SearchResult from "./components/SearchResult";
+import Lists from "./components/SearchResult";
 //import icons from 'glyphicons'
 
 import "./App.css";
@@ -84,7 +84,7 @@ render() {
                         <Route exact path="/" component={HomePageL} />
                         <Route path="/Login" component={Login} />
                         <Route path="/Register" component={Register} />
-                        <Route path="/Search" render={()=><SearchResult query={this.state.query}/>} />
+                        <Route path="/Search" render={()=><Lists query={this.state.query}/>} />
                         <Route exact path="/Users/:userID" component={Feed} />
                         <Route path="/Users/:userID/List/:movieList" component={WatchedMovies} userID={this.state.userID} />
                         <Route exaxt path="/Users/:userID/Friends/:userID" component={PersonPageL}/>
@@ -151,9 +151,7 @@ const SearchR = () => {
     );
 }
 
-const SearchL = () => {
-    return <SearchResult />
-}
+
 
 const Login = () => {
     return <LoginPage /> 
