@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
+import PropTypes from 'prop-types'                // needed for passing location parameters (Install dependency : "npm install -- save prop-types")
+import { withRouter } from 'react-router'         // needed for passing location parameters
 import axios from 'axios'
 import PersonMovie from "./PersonMovie";
 import Logout from "./Logout";
@@ -14,11 +16,41 @@ class Personal extends React.Component {
         this.state = {
             thisUser: true,
             userName: '',
-            userID: ''
+            userID: '',
+            userBIO: '',
+            location: props.location.pathname,         // holds the current location parameter
         }
         
         this.handleUser = this.handleUser.bind(this)
+        this.getCurrentPath = this.getCurrentPath(this)
     }
+    
+    static propTypes = {
+      match: PropTypes.object.isRequired,         // The match parameter for match location paths.
+      location: PropTypes.object.isRequired,      // The location parameter for holding the current location pathname
+      history: PropTypes.object.isRequired        // The history parameter for holding the last visited locations
+    }
+    
+    getCurrentPath(){
+        const { match, location, history } = this.props // retrieves the static propTypes
+        this.setState({location: location.pathname})    // sets the state with the location pathname
+        console.log(this.state.location)
+        this.getLastNumberOfString(this.state.location)
+    }
+    
+    getLastNumberOfString(str){
+        var allNumbers = str.replace(/[^0-9]/g, ' ').trim().split(/\s+/);
+        console.log(parseInt(allNumbers[allNumbers.length - 1], 10));
+        let id = parseInt(allNumbers[allNumbers.length - 1], 10);
+        this.setState({userID: id});
+        this.getUserData(id);
+        return id;
+    }
+    
+    getUserData(id) {
+    axios.get('http://localhost:5000/api/gebruiker?user_id=' + id)
+        .then(response => this.setState({ userName: response.data.username, userBIO: response.data.userbio}))
+}
     
     handleUser () {
 	axios.post('http://localhost:5000/api/gebruiker'
@@ -27,7 +59,7 @@ class Personal extends React.Component {
             if(response.data.message === "False"){
                 this.setState({ thisUser: false })
             } else {
-            this.setState({ userName: response.data.username, userID: response.data.userid});
+            this.setState({ userName: response.data.username, userID: response.data.userid, userBIO: response.data.userbio});
             }
         })
         .catch(error => {
@@ -36,7 +68,8 @@ class Personal extends React.Component {
   }
   
   componentDidMount() {
-      this.handleUser()
+      this.getCurrentPath
+      //this.handleUser()
   }
   
     render() {
@@ -59,19 +92,17 @@ class Personal extends React.Component {
             <div class="media-body person-info">
                   <h4 class="media-heading">{this.state.userName}</h4>
                   <p>Hallo {this.state.userName}!</p>
-                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
-                  <p>It has survived not only five centuries, but also the leap into electronic typesetting,</p>
-                  <p>remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                  <p>{this.state.userBIO}</p>
             </div>
         </div>
-        <Logout />
-        <Link to="/Users/:userID/List/Watched"><Watched /></Link>
-        <Link to="/Users/:userID/List/Top5"><Top5List /></Link>
-        <Link to="/Users/:userID/List/Reviews"><Reviews /></Link>
-        <Link to="/Users/:userID/List/Events"><Events /></Link>
+        
+        <Link to={"/Users/" + this.state.userID + "/List/Watched"}><Watched userID={this.state.userID}/></Link>
+        <Link to={"/Users/" + this.state.userID + "/List/Top5"}><Top5List /></Link>
+        <Link to={"/Users/" + this.state.userID + "/List/Reviews"}><Reviews /></Link>
+        <Link to={"/Users/" + this.state.userID + "/List/Events"}><Events /></Link>
     </div>
         );
     }
     }
     };
-export default Personal
+export default withRouter(Personal)

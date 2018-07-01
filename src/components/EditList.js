@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import axios from 'axios'
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 const ListItem = ({ value, onClick, onItemClick }) => (
@@ -21,9 +22,11 @@ const List = ({ items, onItemClick }) => (
 class ListItems extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props.match)
     this.state = {
+      userID: '',
       inputValue: '',
-      movies: ['Shrek', 'Shrek 2', 'Shrek 3']
+      movies: ['shrek',]
     };
   }
 
@@ -42,6 +45,16 @@ class ListItems extends React.Component {
       this.setState({movies: array});
   }
   
+  handleMovies = (movielist) => {
+    axios.get('http://localhost:5000/api/list/' + movielist)
+        .then(response => this.setState({movies: response.data.movies}))
+  }
+  
+  componentDidMount(){
+      this.handleMovies('Watched')
+  }
+
+  
   onChange = (e) => this.setState({ inputValue: e.target.value });
 
   handleItemClick = (e) => {console.log(e.target.innerHTML)}
@@ -56,6 +69,10 @@ class ListItems extends React.Component {
       </div>
     );
   }
+}
+
+const getUserID = ({ match }) => {
+    this.setState({userID: match.params.userID})
 }
 
 const EditList = (props) => {   

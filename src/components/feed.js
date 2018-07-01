@@ -32,7 +32,7 @@ class Feedlist extends React.Component {
   }
   
   componentDidMount() {
-      this.handleUser()
+      //this.handleUser()
   }
   render() {
     const { thisUser } = this.state;
@@ -59,7 +59,7 @@ class Feedlist extends React.Component {
                                     <div class="media-object person_image"></div>
                                 </div>
                                 <div class="media-body">
-                                      <Link to="/Users/Gerard/Friends/Henk"><h4 class="media-heading">Henk</h4></Link>
+                                      <Link to="/Users/33"><h4 class="media-heading">Henk</h4></Link>
                                       <p>comment met allemaal informatie </p>
                                 </div>
                             </div>

@@ -60,11 +60,11 @@ class LoginPage extends React.Component {
             <div class="form">
             <form onSubmit={this.handlePost}>
                 <table>
-                    <tr><td> E-mail: </td><td><input type="E-mail" name="email" value={this.state.email} onChange={this.handleChange}/></td></tr>
-                    <tr><td> Wachtwoord: </td><td><input type="password" name="password" value={this.state.password} onChange={this.handleChange}/></td></tr>
+                    <tr><td> E-mail: </td><td><input type="E-mail" name="email"  onChange={this.props.passUN}/></td></tr>
+                    <tr><td> Wachtwoord: </td><td><input type="password" name="password" onChange={this.props.passPW}/></td></tr>
                 </table>
             </form>
-            <button onClick={this.handlePost}>login</button>
+            <button onClick={this.props.login}>login</button>
             </div>
         </div>
         <div>

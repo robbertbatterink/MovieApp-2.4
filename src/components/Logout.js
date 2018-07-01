@@ -28,7 +28,7 @@ class Logout extends React.Component {
         
         return (
          <div class="pageBtn_container">
-             <button type="button" onClick={this.handleGet} >Logout</button>
+             <button type="button" onClick={this.props.logout} >Logout</button>
          </div>
          );
     }
