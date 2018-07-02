@@ -22,16 +22,16 @@ const MovieList = ({ items, ids, onItemClick }) => (
 </div>
 );
 
-const UserListItem = ({ value, onClick }) => (
-  <li onClick={onClick}>{value}</li>
+const UserListItem = ({ value, onItemClick, id }) => (
+  <li id={id} value={value} onClick={onItemClick}>{value}</li>
 );
 
-const UserList = ({ items }) => (
+const UserList = ({ items, ids, onItemClick }) => (
 <div className="edit-list">
     <div className="movielist-items">
         <ul className="movie-items">
           {
-          items.map((item, i) => <UserListItem key={i} value={item}  />)
+          items.map((item, i) => <UserListItem key={i} value={item} id={ids[i]} onItemClick={onItemClick} />)
           }
         </ul>
     </div>
@@ -43,7 +43,8 @@ class SearchResult extends React.Component{
         super(props)
         this.state = {
             query: '',
-            redirect: false,
+            redirectMovie: false,
+            redirectUser: false,
             redirectName: '',
             redirectID: '',
             movieLabel: 'display:none',
@@ -60,7 +61,6 @@ class SearchResult extends React.Component{
     componentDidUpdate(prevProps) {
         if(this.props.query !== prevProps.query) {
             let query = this.props.query
-            console.log("hallo")
             this.setState({query: query})
             this.handleQuery(query)
         }
@@ -86,9 +86,10 @@ class SearchResult extends React.Component{
                 };
                 
                 for(var i = 0; i < y; i++){
-                    const { resultUser } = this.state;
+                    const { resultUser, resultUserID } = this.state;
                     const nextUserState = [myObj[1][i].user_name, ...resultUser];
-                    this.setState({resultUser: nextUserState})
+                    const nextUserIDState = [myObj[1][i].user_id, ...resultUserID];
+                    this.setState({resultUser: nextUserState, resultUserID: nextUserIDState})
                 };
                 console.log(this.state.resultMovie, this.state.resultUser)
             }
@@ -103,19 +104,24 @@ class SearchResult extends React.Component{
         this.setState({
             redirectName: name,
             redirectID: index,
-            redirect: true
+            redirectMovie: true
         })        
     }
     
     onUserClick = (e) => {
-        
+        var index = e.target.id;
+        console.log(index)
+        this.setState({redirectID: index, redirectUser: true})
     }
     
     render() {
-        const {resultMovie, resultUser, resultMovieID, redirect} = this.state;
+        const {resultMovie, resultUser, resultMovieID, resultUserID, redirectMovie, redirectUser} = this.state;
         
-        if(redirect){
+        if(redirectMovie){
             return <Redirect to={"/filminfo/"+this.state.redirectName+"/"+this.state.redirectID} />   
+        }
+        if(redirectUser) {
+            return <Redirect to={"/userinfo/"+this.state.redirectID} />  
         }
         return(      
             <div id="container_results">
@@ -125,7 +131,7 @@ class SearchResult extends React.Component{
                 </div>
                 <div class="users">
                     <span class="badge">Found Users:</span>
-                    <UserList items={resultUser} />
+                    <UserList items={resultUser} ids={resultUserID} onItemClick={this.onUserClick}/>
                 </div>
             </div>           
         );

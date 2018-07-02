@@ -17,12 +17,14 @@ class Personal extends React.Component {
             thisUser: true,
             userName: '',
             userID: '',
+            otherUserID: '',
             userBIO: '',
             location: props.location.pathname,         // holds the current location parameter
         }
         
         this.handleUser = this.handleUser.bind(this)
-        this.getCurrentPath = this.getCurrentPath(this)
+        this.getCurrentPath = this.getCurrentPath.bind(this)
+        this.getUserData = this.getUserData.bind(this)
     }
     
     static propTypes = {
@@ -42,25 +44,31 @@ class Personal extends React.Component {
         var allNumbers = str.replace(/[^0-9]/g, ' ').trim().split(/\s+/);
         console.log(parseInt(allNumbers[allNumbers.length - 1], 10));
         let id = parseInt(allNumbers[allNumbers.length - 1], 10);
-        this.setState({userID: id});
-        this.getUserData(id);
+        this.setState({otherUserID: id});
+        this.handleUser(id);
+        //this.getUserData(id);
         console.log("test")
         return id;
     }
     
     getUserData(id) {
     axios.get('http://localhost:5000/api/gebruiker?user_id=' + id)
-        .then(response => this.setState({ userName: response.data.username, userBIO: response.data.userbio, userID: response.data.userid}))
+        .then(response => this.setState({ userName: response.data.username, userBIO: response.data.userbio, otherUserID: response.data.userid, thisUser: false}))
 }
     
-    handleUser () {
+    handleUser (id) {
 	axios.post('http://localhost:5000/api/gebruiker'
         ).then(response => { 
             console.log(response);
-            if(response.data.message === "False"){
-                this.setState({ thisUser: false })
+            if(response.data.error === "true"){
+                this.getUserData(id)
+                //this.setState({ thisUser: false })
             } else {
-            this.setState({ userName: response.data.username, userID: response.data.userid, userBIO: response.data.userbio});
+                if(this.state.otherUserID !== response.data.userid){
+                    this.getUserData(id)
+                }else {
+                    this.setState({ userName: response.data.username, userID: response.data.userid, userBIO: response.data.userbio});
+                }
             }
         })
         .catch(error => {
@@ -77,11 +85,7 @@ class Personal extends React.Component {
         const { thisUser } = this.state;
       
         if (!thisUser) {
-            return (
-                    <div>
-                        <PersonMovie />
-                    </div>
-                    );
+            return (<Redirect to={"/userinfo/"+this.state.otherUserID}/>);
         }
         else {
         return (

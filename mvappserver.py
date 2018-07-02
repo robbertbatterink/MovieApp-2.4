@@ -305,36 +305,55 @@ def status(): #
 				title='you need to be logged in',
 				message='please log in')
 	
-#send the request like this: http://localhost:5000/api/status/bekeken?user_id=1	
+#send the request like this: http://localhost:5000/api/status/bekeken?user_id=1
+# todo: moet nog megeven de movie name en thumbnail	
 @app.route('/api/status/bekeken')
 def statusbekeken(): # 
 	if(request.args.get('user_id')): # if a user_id is provided by the get request we return details, if no matching user is found for user id we return error
-		statusvar = session.query(view_status).filter(view_status.user_id==request.args.get('user_id')).filter(view_status.status=='watched')
-		all_s = [{'user_id':s.user_id, 'movie_id':s.movie_id, 'status':s.status, 'status_timestamp':s.status_timestamp} for s in statusvar]
+		#statusvar = session.query(view_status).filter(view_status.user_id==request.args.get('user_id')).filter(view_status.status=='watched')
+		
+		query = "SELECT view_status.*, movie.* FROM view_status LEFT JOIN movie ON (view_status.movie_id = movie.movie_id) WHERE view_status.status LIKE '%watched%' AND view_status.user_id = {}".format(request.args.get('user_id'))
+		statusvar = session.execute(query).fetchall()
+		
+		all_s = [{'user_id':s.user_id, 'movie_id':s.movie_id, 'status':s.status, 'status_timestamp':s.status_timestamp, 'movie_id':s.movie_id, 'movie_name':s.movie_name, 'movie_runtime':s.movie_runtime, 'movie_description':s.movie_description, 'movie_category':s.movie_category, 'movie_thumbnail':s.movie_thumbnail, 'movie_trailer':s.movie_trailer, 'movie_trailer_runtime':s.movie_trailer_runtime,'movie_release_date':s.movie_release_date, 'movie_added_date':s.movie_added_date} for s in statusvar]
 		return jsonify(all_s)
 	else:
 		if(current_user.is_authenticated):
 			# persoonlijke lijst van films die ik bekeken heb
-			statusvar = session.query(view_status).filter(view_status.user_id==current_user.user_id).filter(view_status.status=='watched')
-			all_s = [{'user_id':s.user_id, 'movie_id':s.movie_id, 'status':s.status, 'status_timestamp':s.status_timestamp} for s in statusvar]
+			#statusvar = session.query(view_status).filter(view_status.user_id==current_user.user_id).filter(view_status.status=='watched')
+			
+			query = "SELECT view_status.*, movie.* FROM view_status LEFT JOIN movie ON (view_status.movie_id = movie.movie_id) WHERE view_status.status LIKE '%watched%' AND view_status.user_id = {}".format(current_user.user_id)
+			statusvar = session.execute(query).fetchall()
+		
+			all_s = [{'user_id':s.user_id, 'movie_id':s.movie_id, 'status':s.status, 'status_timestamp':s.status_timestamp, 'movie_id':s.movie_id, 'movie_name':s.movie_name, 'movie_runtime':s.movie_runtime, 'movie_description':s.movie_description, 'movie_category':s.movie_category, 'movie_thumbnail':s.movie_thumbnail, 'movie_trailer':s.movie_trailer, 'movie_trailer_runtime':s.movie_trailer_runtime,'movie_release_date':s.movie_release_date, 'movie_added_date':s.movie_added_date} for s in statusvar]
+			
 			return jsonify(all_s)
 		else:
 			return jsonify(error='true',
 							title='you need to be logged in or provide a user_id',
 							message='please log in or provide a user_id ')
 
-#send the request like this: http://localhost:5000/api/status/mijnlijst?user_id=1							
+#send the request like this: http://localhost:5000/api/status/mijnlijst?user_id=1
+# todo: moet nog megeven de movie name en thumbnail							
 @app.route('/api/status/mijnlijst')
 def statusgeintreseerd(): # 
 	if(request.args.get('user_id')): # if a user_id is provided by the get request we return details, if no matching user is found for user id we return error
-		statusvar = session.query(view_status).filter(view_status.user_id==request.args.get('user_id')).filter(view_status.status=='interested')
-		all_s = [{'user_id':s.user_id, 'movie_id':s.movie_id, 'status':s.status, 'status_timestamp':s.status_timestamp} for s in statusvar]
+		#statusvar = session.query(view_status).filter(view_status.user_id==request.args.get('user_id')).filter(view_status.status=='interested')
+		
+		query = "SELECT view_status.*, movie.* FROM view_status LEFT JOIN movie ON (view_status.movie_id = movie.movie_id) WHERE view_status.status LIKE '%interested%' AND view_status.user_id = {}".format(request.args.get('user_id'))
+		statusvar = session.execute(query).fetchall()
+		
+		all_s = [{'user_id':s.user_id, 'movie_id':s.movie_id, 'status':s.status, 'status_timestamp':s.status_timestamp, 'movie_id':s.movie_id, 'movie_name':s.movie_name, 'movie_runtime':s.movie_runtime, 'movie_description':s.movie_description, 'movie_category':s.movie_category, 'movie_thumbnail':s.movie_thumbnail, 'movie_trailer':s.movie_trailer, 'movie_trailer_runtime':s.movie_trailer_runtime,'movie_release_date':s.movie_release_date, 'movie_added_date':s.movie_added_date} for s in statusvar]
 		return jsonify(all_s)
 	else:
 		if(current_user.is_authenticated):
 			# persoonlijke lijst van films die ik wil bekijken
-			statusvar = session.query(view_status).filter(view_status.user_id==current_user.user_id).filter(view_status.status=='interested')
-			all_s = [{'user_id':s.user_id, 'movie_id':s.movie_id, 'status':s.status, 'status_timestamp':s.status_timestamp} for s in statusvar]
+			#statusvar = session.query(view_status).filter(view_status.user_id==current_user.user_id).filter(view_status.status=='interested')
+			
+			query = "SELECT view_status.*, movie.* FROM view_status LEFT JOIN movie ON (view_status.movie_id = movie.movie_id) WHERE view_status.status LIKE '%interested%' AND view_status.user_id = {}".format(current_user.user_id)
+			statusvar = session.execute(query).fetchall()
+			
+			all_s = [{'user_id':s.user_id, 'movie_id':s.movie_id, 'status':s.status, 'status_timestamp':s.status_timestamp, 'movie_id':s.movie_id, 'movie_name':s.movie_name, 'movie_runtime':s.movie_runtime, 'movie_description':s.movie_description, 'movie_category':s.movie_category, 'movie_thumbnail':s.movie_thumbnail, 'movie_trailer':s.movie_trailer, 'movie_trailer_runtime':s.movie_trailer_runtime,'movie_release_date':s.movie_release_date, 'movie_added_date':s.movie_added_date} for s in statusvar]
 			return jsonify(all_s)
 		else:
 			return jsonify(error='true',

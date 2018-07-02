@@ -37,6 +37,7 @@ class App extends React.Component {
         query: '',
         resultUser: [],
         loginSuccesfull: false,
+        loggedIn: 'false',
         confirm: false,
         userEmail: '',
         userPassword: '',
@@ -67,6 +68,7 @@ class App extends React.Component {
     }
     
     logoutUser() {
+        console.log('hallo');
         axios.get('http://localhost:5000/api/logout')
           .then(response => {if(response.data.error === "False"){
                 this.setState({ confirm: true })
@@ -82,7 +84,7 @@ class App extends React.Component {
 	axios.post('http://localhost:5000/api/gebruiker'
         ).then(response => { 
             console.log(response);
-            this.setState({ userName: response.data.username, userID: response.data.userid});
+            this.setState({loggedIn: response.data.error});
         })
         .catch(error => {
           console.log(error.response)
@@ -137,8 +139,8 @@ render() {
                         <Route path="/Search" render={()=><Lists query={this.state.query}/>} />
                         <Route exact path="/Users/:userID" component={Feed} />
                         <Route path="/Users/:userID/List/:movieList" component={WatchedMovies} userID={this.state.userID} />
-                        <Route exaxt path="/Users/:userID/Friends/:userID" component={PersonPageL}/>
                         <Route exact path="/filminfo/:movieName/:movieID" component={MovieDetailL}/>
+                        <Route exact path="/userinfo/:userID" render={()=><PersonInfo />}/>
                     </div>
                 </Switch>
 
@@ -147,36 +149,24 @@ render() {
                 <div className="col-xs-7 form-container">
                     <Route exact path="/" render={()=> <div>
                         <Movieslist />
-                            <div>
-                            <Link to="/Login"><button>Login</button></Link>
-                            <Link to="/Register"><button>Register</button></Link>
-                            <Link to="/Search"><button>Search</button></Link>
-                            </div>
-                            <Titles />
+                        <Buttons loggedIn={this.state.loggedIn} logoutUsers={this.logoutUser}/>
+                        <Titles />
                         </div>}/>
                     <Route path="/Login" render={()=> <div>
                         <Movieslist />
-                            <div>
-                            <Link to="/Login"><button>Login</button></Link>
-                            <Link to="/Register"><button>Register</button></Link>
-                            <Link to="/Search"><button>Search</button></Link>
-                            </div>
-                            <Titles />
+                        <Buttons loggedIn={this.state.loggedIn} logoutUsers={this.logoutUser}/>
+                        <Titles />
                         </div>}/>
                     <Route path="/Register" render={()=> <div>
                         <Movieslist />
-                            <div>
-                            <Link to="/Login"><button>Login</button></Link>
-                            <Link to="/Register"><button>Register</button></Link>
-                            <Link to="/Search"><button>Search</button></Link>
-                            </div>
-                            <Titles />
+                        <Buttons loggedIn={this.state.loggedIn} logoutUsers={this.logoutUser}/>
+                        <Titles />
                         </div>}/>
                     <Route path="/Search" render={()=><div><SearchPage passQuery={this.setQuery}/> <Movieslist /></div>} />
                     <Route path="/Users/:userID" render={()=><div><Personal /><Logout logout={this.logoutUser} /><Movieslist /></div>}/>
                     <Route path="/Users/:userID/List" />
-                    <Route exact path="/Users/:userID/Friends/:userID" component={PersonPageR}/>
                     <Route exact path="/filminfo/:movieName/:movieID" component={MovieDetailR}/>
+                    <Route exact path="/userinfo/:userID" render={()=> <div><PersonMovie /><Movieslist /></div>} />
 
                   </div>
                 </Switch>
@@ -189,6 +179,19 @@ render() {
     ); // End of return
   }
 };
+
+const Buttons = (props) => {
+    if(props.loggedIn == 'true'){
+        return (        
+                <div>
+                    <Link to="/Login"><button>Login</button></Link>
+                    <Link to="/Register"><button>Register</button></Link>
+                    <Link to="/Search"><button>Search</button></Link>
+                </div>)
+    } else {
+        return <div><Link to="/Search"><button>Search</button></Link><Logout logout={props.logoutUsers} /></div>
+    }
+}
 
 const MovieDetailL = () => {
     return <MovieDetailImage />
@@ -225,16 +228,4 @@ const WatchedMovies = ({ match }) => {
     return  <EditList/>
 }
 
-const PersonPageR = () => {
-    return (
-        <div>
-        <PersonMovie />
-        <Link to="/Users/Gerard"><MyPage /></Link>
-        <Movieslist />
-        </div>)
-}
-
-const PersonPageL = () => {
-    return <PersonInfo />
-}
 export default App;
