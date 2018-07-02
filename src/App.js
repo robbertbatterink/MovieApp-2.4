@@ -1,4 +1,7 @@
 import React from "react";
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
+import axios from 'axios';
+import PropTypes from 'prop-types';               // needed for passing location parameters (Install dependency : "npm install -- save prop-types")
 
 import Titles from "./components/Titles";
 import Feedlist from "./components/feed";
@@ -20,6 +23,8 @@ import Events from "./components/EventBtn";
 import Reviews from "./components/ReviewsBtn";
 import Top5List from "./components/Top5Btn";
 import Watched from "./components/WatchedBtn";
+import SearchPage from "./components/SearchPage";
+import Lists from "./components/SearchResult";
 //import icons from 'glyphicons'
 
 import "./App.css";
@@ -27,231 +32,200 @@ class App extends React.Component {
   constructor(props){
     super(props)
     this.state = {
+        userID: '',
+        username: '',
+        query: '',
+        resultUser: [],
+        loginSuccesfull: false,
+        loggedIn: 'false',
+        confirm: false,
+        userEmail: '',
+        userPassword: '',
+    }   
+    this.handleGet = this.handleGet.bind(this)
+    this.handleUser = this.handleUser.bind(this)
+    this.handlePost = this.handlePost.bind(this)
+    this.logoutUser = this.logoutUser.bind(this)
+    }
 
-        WelcomeTitle: 'MovieAppName',
-        SubTitle: 'Check out new movies based on your friends recommendations',
-        MovieMetaData: [
-            {ReleaseDate: undefined},
-            {Duration: undefined},
-            {Genre: undefined},
-            {PC: undefined},
-            {Description: undefined}
-        ],
+    formSearchPage(params) {
+        this.setState({
+            resultMovie: params
+        })
+    }
+    
+    setQuery = (event) => {
+        this.setState({query: event.target.value})
+    }
+    
+    setEmail = (event) => {
+        console.log(event.target.value)
+        this.setState({userEmail: event.target.value})
+    }
+    
+    setPassword = (event) => {
+        this.setState({userPassword: event.target.value})
+    }
+    
+    logoutUser() {
+        console.log('hallo');
+        axios.get('http://localhost:5000/api/logout')
+          .then(response => {if(response.data.error === "False"){
+                this.setState({ confirm: true })
+          }})
+        }
 
-          // All the booleans
-          booleanListLeftpart: [],        // array of booleans, use this to store new booleans
-          booleanListRightpart: [],       // array of booleans containg all the booleans of the RIGHT PART
+  
+    handleGet () {
+      axios.get('http://localhost:5000/')
+        .then(response => this.setState({username: response.data.username}))
+    }
+    handleUser () {
+	axios.post('http://localhost:5000/api/gebruiker'
+        ).then(response => { 
+            console.log(response);
+            this.setState({loggedIn: response.data.error});
+        })
+        .catch(error => {
+          console.log(error.response)
+      });
+  }
+   handlePost() {
+	axios.post('http://localhost:5000/api/login',  {
+        "email": this.state.userEmail, 
+        "wachtwoord": this.state.userPassword
+        }).then(response => { 
+              console.log(response)
+              this.setState({error: response.data.error,title: response.data.title, message: response.data.message, username: response.data.username, userID: response.data.userid})
+              if(response.data.error !== "True") {
+                  this.setState({ loginSuccesfull: true})
+              }
 
-                                            // Individual booleans
-          WelcomeImageBool:       true,     // To display the list of recommendations
-          LoginViewBool:          false,    // Enables/disables the login view
-          ShowMetaDataBool:       false,    // Needs to be false initially
-          ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
-          ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
-          ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
-          ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
-          ShowFeed:               false,    // Enables the Feed in the LEFT PART
-          ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
-          LoggedinBool:           true,    // Enables/disables the login and register buttons
-          ShowPerson:             false,    // Displays the profile of another user
-          EditListBool:           false,    //enables/disables the view for editing movielists
-    }}
-
-  /*
-  TOGGLE LOGIN VIEW Function
-  checks the LoginViewBool and WelcomeImageBool,
-  and sets them accordingly to display the login view correctly
-  */
-  toggleLoginView = () => {
-    this.setState({
-      WelcomeImageBool:       false,    // To display the list of recommendations
-      LoginViewBool:          true,     // Enables/disables the login view
-      ShowMetaDataBool:       false,    // Needs to be false initially
-      ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
-      ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
-      ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
-      ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
-      ShowFeed:               false,    // Enables the Feed in the LEFT PART
-      ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
-      ShowPerson:             false,    // Displays the profile of another user
-      EditListBool:           false,    // Enables/disables the view for editing movielists
-    })
-
-  };
-
-toggleRegisterView = () => {
-    this.setState({
-      WelcomeImageBool:       false,    // To display the list of recommendations
-      LoginViewBool:          false,     // Enables/disables the login view
-      ShowMetaDataBool:       false,    // Needs to be false initially
-      ShowRegisterBool:       true,    // Enables/disables the register view in the LEFT PART
-      ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
-      ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
-      ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
-      ShowFeed:               false,    // Enables the Feed in the LEFT PART
-      ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
-      ShowPerson:             false,    // Displays the profile of another user
-      EditListBool:           false,    // Enables/disables the view for editing movielists
-    })
-  };
-
-// This method checks if the variable checkDetailViewBool is true/false
-/*
-toggleMovieList = () => {
-  const doesShow = this.state.WelcomeImageBool;
-  this.setState({WelcomeImageBool: !doesShow}); // when its true, set this variable to false, and vice versa.
-  const doesShowMetaData = this.state.ShowMetaDataBool;
-  this.setState({ShowMetaDataBool: !doesShowMetaData});
-}
-*/
-toggleDetailView = () => {
-  this.setState({
-    WelcomeTitle: 'MovieName',
-    SubTitle: '2018 (not released)',
-    // BOOLEANS
-      WelcomeImageBool:       false,    // To display the list of recommendations
-      LoginViewBool:          false,     // Enables/disables the login view
-      ShowMetaDataBool:       true,    // Needs to be false initially
-      ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
-      ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
-      ShowDetailImageBool:    true,    // Displays the corresponding movie image in the detail view on the LEFT PART
-      ShowMovieReccListBool:  false,     // Displays the generic movie reccomendations list
-      ShowFeed:               false,    // Enables the Feed in the LEFT PART
-      ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
-      ShowPerson:             false,    // Displays the profile of another user
-      EditListBool:           false,    // Enables/disables the view for editing movielists
-
-    MovieMetaData: [
-      {ReleaseDate: '12-12-13'},
-      {Duration: 'xx:xx:xx'},
-      {Genre: 'Action'},
-      {PC: 'PEGI16'},
-      {Description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sagittis, massa eget gravida suscipit, diam tortor gravida lacus, non convallis ipsum lacus vitae felis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam in erat iaculis justo sollicitudin mattis'}
-  ],
-
-  })
-}
-
-// Gets the original Welcome view back
-toggleWelcomeView = () => {
-  this.setState({
-    WelcomeTitle: 'MovieAppName',
-    SubTitle: 'Check out new movies based on your friends recommendations',
-    // BOOLEANS
-      WelcomeImageBool:       true,    // To display the list of recommendations
-      LoginViewBool:          false,     // Enables/disables the login view
-      ShowMetaDataBool:       false,    // Needs to be false initially
-      ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
-      ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
-      ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
-      ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
-      ShowFeed:               false,    // Enables the Feed in the LEFT PART
-      ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
-      LoggedinBool:           true,     // Enables/disables the login and register buttons
-      ShowPerson:             false,    // Displays the profile of another user
-      EditListBool:           false,    // Enables/disables the view for editing movielists
-  })
-}
-
-//Shows account when login is pressed
-toggleAccount = () => {
-      this.setState({
-      WelcomeImageBool:       false,    // To display the list of recommendations
-      LoginViewBool:          false,     // Enables/disables the login view
-      ShowMetaDataBool:       false,    // Needs to be false initially
-      ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
-      ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
-      ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
-      ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
-      ShowFeed:               true,    // Enables the Feed in the LEFT PART
-      ShowPersonalPage:       true,    // Enables the personal page in the RIGHT PART
-      LoggedinBool:           false,    // Enables/disables the login and register buttons
-      ShowPerson:             false,    // Displays the profile of another user
-      EditListBool:           false,    // Enables/disables the view for editing movielists
+        })
+        .catch(error => {
+          console.log(error.response)
+      });
+  }
+  
+  componentDidMount() {
+     // this.handleUser()
+  }
+  
+render() {
+    const { loginSuccesfull, confirm } = this.state;
+    
+      if (confirm) {
+            this.setState({confirm: false})
+            return <Router><Redirect to={"/"} /></Router>;
+      }
       
-    })      
-};
-togglePerson = () => {
-    this.setState({
-      WelcomeImageBool:       false,    // To display the list of recommendations
-      LoginViewBool:          false,     // Enables/disables the login view
-      ShowMetaDataBool:       false,    // Needs to be false initially
-      ShowRegisterBool:       false,    // Enables/disables the register view in the LEFT PART
-      ShowPersonInfoBool:     false,    // Enables/disables the personalized information of a user.
-      ShowDetailImageBool:    false,    // Displays the corresponding movie image in the detail view on the LEFT PART
-      ShowMovieReccListBool:  true,     // Displays the generic movie reccomendations list
-      ShowFeed:               false,    // Enables the Feed in the LEFT PART
-      ShowPersonalPage:       false,    // Enables the personal page in the RIGHT PART
-      LoggedinBool:           false,    // Enables/disables the login and register buttons 
-      ShowPerson:             true,    // Displays the profile of another user
-      EditListBool:           false,    // Enables/disables the view for editing movielists
-    })
-}
-toggleEditList =() => {
-    this.setState({
-        ShowFeed:            false,    // Enables the Feed in the LEFT PART
-        EditListBool:        true,      // Enables/disables the view for editing movielists
-    })
-}
-
-  render() {
+      if (loginSuccesfull) {
+          this.setState({loginSuccesfull: false})
+          return <Router><Redirect to={"/Users/"+ this.state.userID} /></Router>;
+      }
     return (
-
+        <Router>
         <div className="wrapper">
           <div className="main">
             <div className="container">
               <div className="row">
 
                 {/**LEFT PART */}
-                <div className="col-xs-5 title-container">
-                {this.state.WelcomeImageBool ? <WelcomeImage/> : null}
-                {this.state.ShowDetailImageBool ? <MovieDetailImage /> : null}
-                {this.state.LoginViewBool ? <LoginPage toggleAccount={this.toggleAccount}/> : null }
-                {this.state.ShowRegisterBool ? <RegisterView /> : null}
-                {this.state.ShowFeed ? <Feedlist getPerson={this.togglePerson}/> : null}
-                {this.state.EditListBool ? <EditList back={this.toggleAccount}/> : null}
-                {this.state.ShowPerson ? <PersonInfo /> : null}
-                </div>
-
+                <Switch>
+                    <div className="col-xs-5 title-container">
+                        <Route exact path="/" render={()=><WelcomeImage />} />
+                        <Route path="/Login" render={()=><LoginPage passUN={this.setEmail} passPW={this.setPassword} login={this.handlePost}/> } />
+                        <Route path="/Register" component={Register} />
+                        <Route path="/Search" render={()=><Lists query={this.state.query}/>} />
+                        <Route exact path="/Users/:userID" component={Feed} />
+                        <Route path="/Users/:userID/List/:movieList" component={WatchedMovies} userID={this.state.userID} />
+                        <Route exact path="/filminfo/:movieName/:movieID" component={MovieDetailL}/>
+                        <Route exact path="/userinfo/:userID" render={()=><PersonInfo />}/>
+                    </div>
+                </Switch>
 
                 {/**RIGHT PART */}
+                <Switch>
                 <div className="col-xs-7 form-container">
-                  {this.state.ShowPersonalPage ? <Personal /> : null}
-                  {this.state.ShowPersonalPage ? <div> <Logout logout={this.toggleWelcomeView}/> <Top5List /> <Watched back={this.toggleAccount} watchedList={this.toggleEditList}/> <Reviews /> <Events /></div>: null}
-                  {this.state.ShowPerson ? <PersonMovie /> : null}
-                  {this.state.ShowPerson ? <MyPage myPage={this.toggleAccount}/> : null}
-                  {this.state.LoggedinBool ? 
-                  <div>
-                  <button onClick={this.toggleLoginView}>Login</button>
-                  <button onClick={this.toggleRegisterView}>Register</button>
-                  <Titles
-                    title={this.state.WelcomeTitle}
-                    subtitle={this.state.SubTitle}/>                  
-                    </div>: null }
-                    {this.state.ShowMetaDataBool ?
-                    <div>
-                        <MovieMetaData
-                        metaReleaseDate={this.state.MovieMetaData[0].ReleaseDate}
-                        metaDuration={this.state.MovieMetaData[1].Duration}
-                        metaGenre={this.state.MovieMetaData[2].Genre}
-                        metaPC={this.state.MovieMetaData[3].PC}
-                        metaDescription={this.state.MovieMetaData[4].Description}/>
+                    <Route exact path="/" render={()=> <div>
+                        <Movieslist />
+                        <Buttons loggedIn={this.state.loggedIn} logoutUsers={this.logoutUser}/>
+                        <Titles />
+                        </div>}/>
+                    <Route path="/Login" render={()=> <div>
+                        <Movieslist />
+                        <Buttons loggedIn={this.state.loggedIn} logoutUsers={this.logoutUser}/>
+                        <Titles />
+                        </div>}/>
+                    <Route path="/Register" render={()=> <div>
+                        <Movieslist />
+                        <Buttons loggedIn={this.state.loggedIn} logoutUsers={this.logoutUser}/>
+                        <Titles />
+                        </div>}/>
+                    <Route path="/Search" render={()=><div><SearchPage passQuery={this.setQuery}/> <Movieslist /></div>} />
+                    <Route path="/Users/:userID" render={()=><div><Personal /><Logout logout={this.logoutUser} /><Movieslist /></div>}/>
+                    <Route path="/Users/:userID/List" />
+                    <Route exact path="/filminfo/:movieName/:movieID" component={MovieDetailR}/>
+                    <Route exact path="/userinfo/:userID" render={()=> <div><PersonMovie /><Movieslist /></div>} />
 
-                    </div> : null }
+                  </div>
+                </Switch>
 
-
-                    <div>
-                        {this.state.ShowMovieReccListBool ? <Movieslist click={this.toggleDetailView} /> :   <button onClick={this.toggleWelcomeView}>Go Back</button>}
-                    </div>
-
-                </div>
               </div>
             </div>
           </div>
         </div>
-
+    </Router>
     ); // End of return
   }
 };
+
+const Buttons = (props) => {
+    if(props.loggedIn == 'true'){
+        return (        
+                <div>
+                    <Link to="/Login"><button>Login</button></Link>
+                    <Link to="/Register"><button>Register</button></Link>
+                    <Link to="/Search"><button>Search</button></Link>
+                </div>)
+    } else {
+        return <div><Link to="/Search"><button>Search</button></Link><Logout logout={props.logoutUsers} /></div>
+    }
+}
+
+const MovieDetailL = () => {
+    return <MovieDetailImage />
+}
+
+const MovieDetailR = () => {
+    return <MovieMetaData />
+}
+
+
+const SearchR = () => {
+    return (
+    <div>
+        <SearchPage />
+        <Movieslist />
+    </div>
+    );
+}
+
+
+
+
+const Register = () => {
+    return <RegisterView />
+}
+
+const Feed = () => {
+    return <Feedlist />
+}
+
+
+
+const WatchedMovies = ({ match }) => {
+    return  <EditList/>
+}
 
 export default App;
