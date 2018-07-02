@@ -30,6 +30,7 @@ login_manager.login_view = "Login"
 @login_manager.user_loader
 def load_user(user_id):
     print('fucking shit man')
+    print(user_id)
     return session.query(user).filter(user.user_id==user_id).first()
 
 @app.route('/', defaults={'path': ''})
@@ -91,7 +92,8 @@ def gebruiker():
 		try:
 			uservar = session.query(user).filter(user.user_id==request.args.get('user_id')).first()
 			return jsonify(username = uservar.user_name,
-							userbio = uservar.user_bio )
+							userbio = uservar.user_bio,
+                                                        userid = uservar.user_id)
 		except:
 			return jsonify(error='true',
 			title='query failed',
@@ -156,7 +158,7 @@ def login():
                 print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
                 print(uservar)
                 print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-                login_user(uservar, remember=True)
+                login_user(uservar)
                 print(current_user.user_name)
                 userid = current_user.user_id
                 print(userid)
@@ -164,12 +166,16 @@ def login():
                 print(useridstr)
                 
 
-                return (redirect("http://localhost:3000/Users/1"))
+                return jsonify(error='False',
+                    title='Login succesful',
+                     message='You are now logged in',
+                     username= current_user.user_name,
+                     userid= current_user.user_id)
 			
 @app.route('/api/logout', methods=['GET'])
 def logout():
-    print("hallo" + current_user.user_name)
-    logout_user()
+    #print("hallo" + current_user.user_name)
+    #logout_user()
     return jsonify(error='False',
                     title='Logout succesful',
                     message='You are now logged out')

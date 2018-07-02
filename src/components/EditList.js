@@ -51,7 +51,7 @@ class ListItems extends React.Component {
   }
   
   componentDidMount(){
-      this.handleMovies('Watched')
+     //this.handleMovies('Watched')
   }
 
   

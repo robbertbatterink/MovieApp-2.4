@@ -38,6 +38,8 @@ class App extends React.Component {
         resultUser: [],
         loginSuccesfull: false,
         confirm: false,
+        userEmail: '',
+        userPassword: '',
     }   
     this.handleGet = this.handleGet.bind(this)
     this.handleUser = this.handleUser.bind(this)
@@ -87,7 +89,7 @@ class App extends React.Component {
       });
   }
    handlePost() {
-	axios.post('http://localhost:5000/api/login', {
+	axios.post('http://localhost:5000/api/login',  {
         "email": this.state.userEmail, 
         "wachtwoord": this.state.userPassword
         }).then(response => { 
@@ -171,7 +173,7 @@ render() {
                             <Titles />
                         </div>}/>
                     <Route path="/Search" render={()=><div><SearchPage passQuery={this.setQuery}/> <Movieslist /></div>} />
-                    <Route exact path="/Users/:userID" render={()=><div><Personal /><Logout logout={this.logoutUser} /><Movieslist /></div>}/>
+                    <Route path="/Users/:userID" render={()=><div><Personal /><Logout logout={this.logoutUser} /><Movieslist /></div>}/>
                     <Route path="/Users/:userID/List" />
                     <Route exact path="/Users/:userID/Friends/:userID" component={PersonPageR}/>
                     <Route exact path="/filminfo/:movieName/:movieID" component={MovieDetailR}/>
@@ -220,11 +222,7 @@ const Feed = () => {
 
 
 const WatchedMovies = ({ match }) => {
-    return (
-            <div>
-        <EditList/>
-                </div>
-    );
+    return  <EditList/>
 }
 
 const PersonPageR = () => {

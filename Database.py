@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import datetime
-conn = sqla.create_engine('mysql+pymysql://root@localhost/alchemytest?host=localhost?port=3306?charset=utf8') 
+conn = sqla.create_engine('mysql+pymysql://root@localhost/alchemytest?host=localhost?port=3306?charset=utf8', pool_pre_ping=True) 
 Base = declarative_base()
 
 class user(Base):

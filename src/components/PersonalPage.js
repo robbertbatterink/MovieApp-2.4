@@ -44,12 +44,13 @@ class Personal extends React.Component {
         let id = parseInt(allNumbers[allNumbers.length - 1], 10);
         this.setState({userID: id});
         this.getUserData(id);
+        console.log("test")
         return id;
     }
     
     getUserData(id) {
     axios.get('http://localhost:5000/api/gebruiker?user_id=' + id)
-        .then(response => this.setState({ userName: response.data.username, userBIO: response.data.userbio}))
+        .then(response => this.setState({ userName: response.data.username, userBIO: response.data.userbio, userID: response.data.userid}))
 }
     
     handleUser () {
